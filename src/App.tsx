@@ -59,6 +59,16 @@ export default function App() {
   const socketRef = useRef<Socket | null>(null);
   const timerRef = useRef<any>(null);
 
+  // Clear old session data on mount (one-time migration)
+  useEffect(() => {
+    const migrationKey = 'theme_migration_v1';
+    if (!localStorage.getItem(migrationKey)) {
+      localStorage.removeItem('escape_session_token');
+      localStorage.setItem(migrationKey, 'done');
+      console.log('Cleared old session data for theme migration');
+    }
+  }, []);
+
   // Initialize socket connection
   useEffect(() => {
     const socket = io(window.location.origin, {
@@ -353,7 +363,7 @@ export default function App() {
       {/* Global Header */}
       <Header
         roomCode={room?.code}
-        theme={room?.theme || 'MYSTERY'}
+        theme={(room?.theme as ThemeType) || 'SCHOOL_DAY'}
         storyIndex={player ? player.currentStoryIndex + 1 : 1}
         totalStories={room?.storiesCount || 3}
         timeRemainingSeconds={view === 'GAME_PLAYING' ? timeRemainingSeconds : undefined}

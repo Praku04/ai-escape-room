@@ -32,8 +32,8 @@ app.post('/api/rooms', (req, res) => {
   try {
     const {
       hostName,
-      theme = 'MYSTERY',
-      difficulty = 'MEDIUM',
+      theme = 'SCHOOL_DAY',
+      difficulty = 'EASY',
       storiesCount = 3,
       timePerStorySeconds = 120,
       maxPlayers = 500
@@ -43,9 +43,19 @@ app.post('/api/rooms', (req, res) => {
       return res.status(400).json({ error: 'Host name is required.' });
     }
 
+    // Theme migration: Map old themes to new themes
+    const themeMap: Record<string, string> = {
+      'MYSTERY': 'SCHOOL_DAY',
+      'REAL_WORLD': 'SCHOOL_DAY',
+      'NEURAL_BREAK': 'TREASURE_HUNT',
+      'AVALORIA': 'SUPERHERO'
+    };
+    
+    const validTheme = themeMap[theme] || theme;
+
     const { room, hostPlayer } = roomManager.createRoom(
       hostName,
-      theme,
+      validTheme,
       difficulty,
       Number(storiesCount) || 3,
       Number(timePerStorySeconds) || 120,

@@ -17,7 +17,7 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({
   roomCode,
-  theme = 'MYSTERY',
+  theme = 'SCHOOL_DAY',
   storyIndex = 1,
   totalStories = 3,
   timeRemainingSeconds,
@@ -25,7 +25,7 @@ export const Header: React.FC<HeaderProps> = ({
   totalPlayersCount = 1,
   playerName
 }) => {
-  const tStyle = THEME_STYLES[theme];
+  const tStyle = THEME_STYLES[theme] || THEME_STYLES['SCHOOL_DAY'];
 
   const formatTime = (secs: number) => {
     const m = Math.floor(secs / 60);
