@@ -32,10 +32,10 @@ export const VictoryPodium: React.FC<VictoryPodiumProps> = ({
       {/* Title Banner */}
       <div className="text-center space-y-3">
         <div className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 px-4 py-1.5 rounded-full text-amber-400 font-mono text-xs font-bold uppercase tracking-widest">
-          🏆 VICTORY — GAME COMPLETED
+          🏆 GAME OVER — GREAT JOB EVERYONE!
         </div>
-        <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight">FINAL CHAMPIONS</h1>
-        <p className="text-slate-400 text-sm">Congratulations to the top prompt engineers!</p>
+        <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight">🎉 WINNERS! 🎉</h1>
+        <p className="text-slate-400 text-sm">Amazing work solving all the puzzles!</p>
       </div>
 
       {/* Podium Grid */}
@@ -89,27 +89,27 @@ export const VictoryPodium: React.FC<VictoryPodiumProps> = ({
       {/* Game Analytics Card */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4 shadow-xl">
         <h3 className="font-bold text-white text-base border-b border-slate-800 pb-2 flex items-center gap-2">
-          <Zap className="w-4 h-4 text-amber-400" /> ROOM PERFORMANCE STATS
+          <Zap className="w-4 h-4 text-amber-400" /> GAME STATS
         </h3>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
           <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-            <span className="block text-xs text-slate-400">Total Participants</span>
+            <span className="block text-xs text-slate-400">Total Players</span>
             <span className="font-mono font-bold text-lg text-white mt-1 block">{stats.totalParticipants}</span>
           </div>
 
           <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-            <span className="block text-xs text-slate-400">Avg Completion Time</span>
+            <span className="block text-xs text-slate-400">Average Time</span>
             <span className="font-mono font-bold text-lg text-teal-400 mt-1 block">{stats.averageCompletionTimeSeconds}s</span>
           </div>
 
           <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-            <span className="block text-xs text-slate-400">Highest Score</span>
+            <span className="block text-xs text-slate-400">Top Score</span>
             <span className="font-mono font-bold text-lg text-amber-400 mt-1 block">{stats.highestScorePlayer.score}</span>
           </div>
 
           <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-            <span className="block text-xs text-slate-400">Top Solver</span>
+            <span className="block text-xs text-slate-400">Best Player</span>
             <span className="font-mono font-bold text-sm text-purple-300 mt-1 block truncate">{stats.highestScorePlayer.name}</span>
           </div>
         </div>
@@ -117,12 +117,12 @@ export const VictoryPodium: React.FC<VictoryPodiumProps> = ({
         {/* Fastest Story Solvers List */}
         {stats.fastestStoryTimes.length > 0 && (
           <div className="space-y-2 pt-2">
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Fastest Story Solvers</span>
+            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Fastest Puzzle Solvers</span>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               {stats.fastestStoryTimes.map((st) => (
                 <div key={st.storyIndex} className="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800 text-xs flex justify-between items-center">
                   <div>
-                    <div className="font-bold text-slate-200">Story {st.storyIndex}</div>
+                    <div className="font-bold text-slate-200">Puzzle {st.storyIndex}</div>
                     <div className="text-[11px] text-teal-400 font-medium">{st.playerName}</div>
                   </div>
                   <div className="font-mono font-bold text-amber-400">{st.timeSeconds}s</div>
@@ -135,7 +135,7 @@ export const VictoryPodium: React.FC<VictoryPodiumProps> = ({
 
       {/* Full Leaderboard Table */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3 shadow-xl">
-        <h3 className="font-bold text-white text-base border-b border-slate-800 pb-2">FULL STANDINGS</h3>
+        <h3 className="font-bold text-white text-base border-b border-slate-800 pb-2">ALL PLAYERS</h3>
         <div className="space-y-1.5 max-h-72 overflow-y-auto pr-1">
           {leaderboard.map((entry) => (
             <div
@@ -150,7 +150,7 @@ export const VictoryPodium: React.FC<VictoryPodiumProps> = ({
               </div>
 
               <div className="flex items-center gap-4 text-slate-400">
-                <span>{entry.completedStories} Stories</span>
+                <span>{entry.completedStories} Puzzles</span>
                 <span>{entry.totalTimeSeconds}s</span>
                 <span className="text-amber-400 font-bold text-sm">{entry.totalScore} PTS</span>
               </div>
@@ -164,10 +164,10 @@ export const VictoryPodium: React.FC<VictoryPodiumProps> = ({
         <div className="flex justify-center pt-2">
           <button
             onClick={onPlayAgain}
-            className="px-8 py-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-base shadow-lg shadow-amber-900/30 transition-all flex items-center gap-2"
+            className="px-8 py-4 rounded-xl bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white font-black text-base shadow-lg shadow-green-900/30 transition-all flex items-center gap-2"
           >
             <RefreshCw className="w-5 h-5" />
-            CREATE NEW ROOM
+            PLAY AGAIN
           </button>
         </div>
       )}

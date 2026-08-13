@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Room, LeaderboardEntry } from '../types/game';
 import { THEME_STYLES } from './ThemeStyles';
-import { Copy, Check, Play, Users, Bot, Sparkles } from 'lucide-react';
+import { Copy, Check, Play, Users, Bot, Sparkles, LogOut } from 'lucide-react';
 
 interface HostLobbyProps {
   room: Room;
   players: LeaderboardEntry[];
   onStartGame: () => void;
   onAddBots: (count: number) => void;
+  onExitRoom?: () => void;
   isStarting?: boolean;
 }
 
@@ -16,6 +17,7 @@ export const HostLobby: React.FC<HostLobbyProps> = ({
   players,
   onStartGame,
   onAddBots,
+  onExitRoom,
   isStarting = false
 }) => {
   const [copied, setCopied] = useState(false);
@@ -32,10 +34,10 @@ export const HostLobby: React.FC<HostLobbyProps> = ({
       {/* Header Banner */}
       <div className="text-center space-y-2">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight flex items-center justify-center gap-3">
-          <Sparkles className="w-8 h-8 text-amber-400" />
-          AI ESCAPE ROOM HOST LOBBY
+          <Sparkles className="w-8 h-8 text-blue-400" />
+          GAME ROOM - WAITING FOR FRIENDS
         </h1>
-        <p className="text-slate-400 text-sm">Share the room code with participants. The game begins when you click Start.</p>
+        <p className="text-slate-400 text-sm">Share the room code with your friends so they can join and play!</p>
       </div>
 
       {/* Room Code Card */}
@@ -53,7 +55,7 @@ export const HostLobby: React.FC<HostLobbyProps> = ({
             {copied ? <Check className="w-6 h-6 text-teal-400" /> : <Copy className="w-6 h-6" />}
           </button>
         </div>
-        <p className="text-xs text-slate-400">Players join using: ROOM CODE ({room.code}) + PLAYER NAME</p>
+        <p className="text-xs text-slate-400">Friends can join using: ROOM CODE ({room.code}) + THEIR NAME</p>
       </div>
 
       {/* Room Config Summary */}
@@ -69,8 +71,8 @@ export const HostLobby: React.FC<HostLobbyProps> = ({
           <span className="font-bold text-sm text-indigo-400 mt-0.5">{room.difficulty}</span>
         </div>
         <div>
-          <span className="block text-xs text-slate-400">STORIES</span>
-          <span className="font-bold text-sm text-teal-400 mt-0.5">{room.storiesCount} Stories</span>
+          <span className="block text-xs text-slate-400">PUZZLES</span>
+          <span className="font-bold text-sm text-teal-400 mt-0.5">{room.storiesCount} Puzzles</span>
         </div>
         <div>
           <span className="block text-xs text-slate-400">TIME LIMIT</span>
@@ -83,29 +85,35 @@ export const HostLobby: React.FC<HostLobbyProps> = ({
         <div className="flex items-center justify-between border-b border-slate-800 pb-3">
           <div className="flex items-center gap-2">
             <Users className="w-5 h-5 text-teal-400" />
-            <h3 className="font-bold text-white text-lg">PLAYERS IN LOBBY</h3>
+            <h3 className="font-bold text-white text-lg">FRIENDS IN ROOM</h3>
           </div>
           <span className="text-xs font-mono font-semibold px-3 py-1 bg-slate-950 rounded-lg text-teal-400 border border-slate-800">
-            {players.length} / {room.maxPlayers} PLAYERS
+            {players.length} / {room.maxPlayers} FRIENDS
           </span>
         </div>
 
         {/* Player Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 max-h-60 overflow-y-auto p-1">
-          {players.map((p) => (
-            <div
-              key={p.playerId}
-              className="flex items-center gap-2 bg-slate-950/80 px-3 py-2 rounded-xl border border-slate-800/80 text-sm"
-            >
-              <span className="w-2.5 h-2.5 rounded-full bg-teal-400 animate-pulse" />
-              <span className="font-medium text-slate-200 truncate">{p.name}</span>
+          {players.length === 0 ? (
+            <div className="col-span-full text-center py-8 text-slate-400 text-sm">
+              Waiting for friends to join...
             </div>
-          ))}
+          ) : (
+            players.map((p) => (
+              <div
+                key={p.playerId}
+                className="flex items-center gap-2 bg-slate-950/80 px-3 py-2 rounded-xl border border-slate-800/80 text-sm"
+              >
+                <span className="w-2.5 h-2.5 rounded-full bg-teal-400 animate-pulse" />
+                <span className="font-medium text-slate-200 truncate">{p.name}</span>
+              </div>
+            ))
+          )}
         </div>
 
         {/* Demo Bot Add Control */}
         <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800/80">
-          <span className="text-xs text-slate-400">Demo Simulation: Test with multi-player scaling</span>
+          <span className="text-xs text-slate-400">Demo Mode: Test with more players</span>
           <button
             onClick={() => onAddBots(20)}
             className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-300 rounded-lg border border-slate-700 flex items-center gap-1.5 transition-colors"
@@ -116,15 +124,29 @@ export const HostLobby: React.FC<HostLobbyProps> = ({
       </div>
 
       {/* Start Game Action */}
-      <div className="pt-2">
+      <div className="pt-2 space-y-3">
         <button
           onClick={onStartGame}
           disabled={isStarting || players.length === 0}
-          className="w-full py-4 rounded-xl bg-gradient-to-r from-teal-500 via-teal-600 to-indigo-600 hover:from-teal-400 hover:to-indigo-500 text-white font-extrabold text-lg shadow-xl shadow-teal-900/40 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+          className="w-full py-4 rounded-xl bg-gradient-to-r from-green-500 via-green-600 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-white font-extrabold text-lg shadow-xl shadow-green-900/40 transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Play className="w-6 h-6 fill-current" />
-          {isStarting ? 'STARTING COUNTDOWN...' : 'START GAME NOW'}
+          {isStarting ? 'STARTING COUNTDOWN...' : players.length === 0 ? 'WAITING FOR FRIENDS TO JOIN' : 'START GAME NOW'}
         </button>
+        {players.length === 0 && (
+          <p className="text-center text-xs text-slate-400">Need at least 1 player to start</p>
+        )}
+        
+        {/* Exit Room Button */}
+        {onExitRoom && (
+          <button
+            onClick={onExitRoom}
+            className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white font-medium text-sm transition-all flex items-center justify-center gap-2"
+          >
+            <LogOut className="w-4 h-4" />
+            LEAVE ROOM & EXIT
+          </button>
+        )}
       </div>
     </div>
   );

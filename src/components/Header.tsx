@@ -43,7 +43,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="font-bold text-lg tracking-wider text-white">AI ESCAPE ROOM</h1>
+              <h1 className="font-bold text-lg tracking-wider text-white">KIDS PUZZLE GAME</h1>
               <span className={`text-xs px-2 py-0.5 rounded-full border ${tStyle.cardBorder} ${tStyle.accentColor} font-mono uppercase`}>
                 {theme.replace('_', ' ')}
               </span>
@@ -60,7 +60,7 @@ export const Header: React.FC<HeaderProps> = ({
         {timeRemainingSeconds !== undefined && (
           <div className="flex items-center gap-4 bg-slate-900/80 px-4 py-1.5 rounded-xl border border-slate-700/50 shadow-inner">
             <div className="text-xs font-medium text-slate-300">
-              STORY <span className="text-teal-400 font-bold">{storyIndex}</span> / {totalStories}
+              PUZZLE <span className="text-teal-400 font-bold">{storyIndex}</span> / {totalStories}
             </div>
 
             <div className="h-4 w-[1px] bg-slate-700" />

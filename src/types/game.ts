@@ -1,4 +1,4 @@
-export type ThemeType = 'REAL_WORLD' | 'MYSTERY' | 'NEURAL_BREAK' | 'AVALORIA';
+export type ThemeType = 'SCHOOL_DAY' | 'PET_RESCUE' | 'TREASURE_HUNT' | 'SUPERHERO';
 
 export type DifficultyLevel = 'EASY' | 'MEDIUM' | 'HARD';
 

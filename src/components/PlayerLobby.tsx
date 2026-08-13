@@ -1,18 +1,20 @@
 import React from 'react';
 import { Room } from '../types/game';
 import { THEME_STYLES } from './ThemeStyles';
-import { Users, Clock, Loader2 } from 'lucide-react';
+import { Users, Clock, Loader2, LogOut } from 'lucide-react';
 
 interface PlayerLobbyProps {
   room: Room;
   playerName: string;
   totalPlayersCount: number;
+  onExitRoom?: () => void;
 }
 
 export const PlayerLobby: React.FC<PlayerLobbyProps> = ({
   room,
   playerName,
-  totalPlayersCount
+  totalPlayersCount,
+  onExitRoom
 }) => {
   const themeStyle = THEME_STYLES[room.theme];
 
@@ -52,6 +54,19 @@ export const PlayerLobby: React.FC<PlayerLobbyProps> = ({
             The game will begin synchronized for all players as soon as the host initiates the session.
           </p>
         </div>
+        
+        {/* Exit Button */}
+        {onExitRoom && (
+          <div className="pt-3 border-t border-slate-800">
+            <button
+              onClick={onExitRoom}
+              className="w-full py-2.5 rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white font-medium text-sm transition-all flex items-center justify-center gap-2"
+            >
+              <LogOut className="w-4 h-4" />
+              LEAVE ROOM
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

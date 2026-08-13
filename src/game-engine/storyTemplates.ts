@@ -22,622 +22,596 @@ export interface StoryTemplate {
 
 export const STORY_TEMPLATES: StoryTemplate[] = [
   // -------------------------------------------------------------
-  // THEME 1: REAL WORLD (INDIAN REAL-WORLD CASE STUDIES)
+  // THEME 1: SCHOOL DAY - Simple classroom adventures
   // -------------------------------------------------------------
   {
-    id: 'rw-flight',
-    theme: 'REAL_WORLD',
-    title: 'IndiGo Schedule Cancellation Refund',
-    description: 'Your Bangalore (BLR) to Mumbai (BOM) flight was abruptly rescheduled by 3.5 hours, making you miss an important client summit. Persuade YatriAssist AI to issue a 100% full refund under DGCA Passenger Charter rules.',
+    id: 'school-library',
+    theme: 'SCHOOL_DAY',
+    title: 'Find the Library Book',
+    description: 'Someone borrowed your favorite library book and forgot to return it! Ask the friendly Library Robot to help you find who has it.',
     character: {
-      name: 'YatriAssist AI',
-      role: 'Airlines Senior Customer Care AI',
-      avatar: '✈️',
-      personality: 'Professional, policy-bound, initially polite but firm. Yields when DGCA Civil Aviation Requirements are cited.'
+      name: 'Libby the Library Bot',
+      role: 'School Library Helper',
+      avatar: '📚',
+      personality: 'Friendly and helpful. Loves books and helping students find what they need.'
     },
-    openingMessageTemplate: 'Namaste! I am YatriAssist AI representing Indian Skyways. I see flight 6E-409 was rescheduled due to operational crew rotation. Standard non-flexi tickets are non-refundable after departure. How may I assist you today?',
-    hiddenObjectiveTemplate: 'Cite the DGCA Civil Aviation Requirements (CAR Section 3, Series M, Part IV) regarding flight delay exceeding 3 hours to secure your 100% refund of ₹8,500.',
+    openingMessageTemplate: 'Hello! I\'m Libby, your library helper! I see you\'re looking for "The Magic Dragon" book. Let me check who borrowed it last!',
+    hiddenObjectiveTemplate: 'Find out that Sarah from Class 3B has the book and ask Libby to send her a reminder message.',
     requiredFactsTemplates: [
-      'Flight 6E-409 departure was shifted by the airline by 210 minutes with less than 24 hours notice',
-      'DGCA CAR Section 3 Part IV mandates 100% full refund or alternative flight when schedule alteration exceeds 3 hours',
-      'PNR record 6E-YATR89 shows passenger was present at airport terminal before original schedule'
+      'The book was borrowed by Sarah from Class 3B',
+      'Sarah borrowed it 2 weeks ago',
+      'Libby can send a friendly reminder message to return the book'
     ],
     successCriteriaTemplates: [
-      'Player explicitly mentions DGCA CAR Section 3 rules or 3.5 hour schedule delay',
-      'Player requests 100% full refund under DGCA passenger charter without cancellation fee deductions'
+      'Player asks who borrowed the book',
+      'Player finds out it was Sarah from Class 3B',
+      'Player asks Libby to send a reminder to Sarah'
     ],
     cluesTemplates: [
-      'Ask YatriAssist about DGCA rules governing schedule changes exceeding 3 hours.',
-      'Reference your PNR 6E-YATR89 and the exact 210-minute delay notification timestamp.'
+      'Ask Libby who borrowed "The Magic Dragon" book last.',
+      'Ask Libby to check when the book was borrowed.',
+      'Request Libby to send a return reminder.'
     ],
     variations: {
-      codes: ['6E-409 / PNR 6E-YATR89', 'AI-802 / PNR AI-IND880', 'UK-921 / PNR UK-VIST11'],
-      policies: ['DGCA CAR Section 3 Part IV', 'DGCA Passenger Rights Charter 2021', 'Rule 135-A Civil Aviation Act']
+      suspects: ['Sarah from Class 3B', 'Tom from Class 3A', 'Emma from Class 3C']
     }
   },
   {
-    id: 'rw-hotel',
-    theme: 'REAL_WORLD',
-    title: 'Goa Resort Emergency Cancellation',
-    description: 'A sudden medical emergency in Jaipur forced you to cancel a non-refundable luxury resort in North Goa booked via Yatra. Convince ResortAssist AI to invoke the Medical Force Majeure refund clause.',
+    id: 'school-lunch',
+    theme: 'SCHOOL_DAY',
+    title: 'Lunch Box Mystery',
+    description: 'Someone accidentally took your lunch box! Talk to the Cafeteria Helper to find out where it went.',
     character: {
-      name: 'ResortAssist AI',
-      role: 'Goa Luxury Stays Booking Concierge',
-      avatar: '🏨',
-      personality: 'Courteous, strict on peak-season cancellation deadlines, sympathetic when formal hospital admission certificates are presented.'
+      name: 'Chef Sunny',
+      role: 'School Cafeteria Helper',
+      avatar: '🍎',
+      personality: 'Cheerful and kind. Knows everything that happens in the cafeteria.'
     },
-    openingMessageTemplate: 'Namaste and welcome to ResortAssist! Booking #GOA-9821 at Taj Vagator Resort is non-refundable within 48 hours of check-in under Peak Season Policy. Full cancellation penalty applies.',
-    hiddenObjectiveTemplate: 'Invoke Medical Emergency Exemption (Force Majeure Clause 14-B) with Fortis Hospital emergency admission certificate proof.',
+    openingMessageTemplate: 'Hi there! Welcome to the cafeteria! Oh no, did you lose your lunch box? Don\'t worry, let\'s figure this out together!',
+    hiddenObjectiveTemplate: 'Discover that your lunch box is in the Lost and Found box near the cafeteria door.',
     requiredFactsTemplates: [
-      'Guest was admitted to Fortis Hospital Jaipur emergency ward under certificate #FHR-992',
-      'Force Majeure Clause 14-B waives 100% cancellation penalty for documented medical emergencies',
-      'Booking ID GOA-9821 is flagged for emergency waiver review'
+      'The blue lunch box with your name was found this morning',
+      'It is in the Lost and Found box',
+      'The Lost and Found box is near the cafeteria door'
     ],
     successCriteriaTemplates: [
-      'Player cites Fortis Hospital emergency certificate #FHR-992 or Force Majeure Clause 14-B',
-      'Player requests 100% refund or credit voucher exemption from peak season penalty'
+      'Player describes their lunch box (blue with their name)',
+      'Player asks about the Lost and Found',
+      'Player finds out the location of the Lost and Found box'
     ],
     cluesTemplates: [
-      'Inquire if ResortAssist has a Force Majeure clause for sudden hospital emergencies.',
-      'Provide Fortis Hospital admission certificate number FHR-992.'
+      'Tell Chef Sunny what your lunch box looks like.',
+      'Ask if anyone found a lunch box today.',
+      'Ask where the Lost and Found box is.'
     ],
     variations: {
-      codes: ['GOA-9821 / Certificate FHR-992', 'MUM-8840 / Certificate MAX-102', 'KER-3301 / Certificate APL-991']
+      locations: ['Lost and Found box near cafeteria door', 'Teacher\'s desk in classroom', 'Principal\'s office']
     }
   },
   {
-    id: 'rw-package',
-    theme: 'REAL_WORLD',
-    title: 'Flipkart High-Value Smartphone Delivery Discrepancy',
-    description: 'A ₹45,000 smartphone marked "Delivered with OTP" in Connaught Place, New Delhi is nowhere in sight. Prove to Delhivery AI that driver GPS coordinates failed at the drop-off location.',
+    id: 'school-pencil',
+    theme: 'SCHOOL_DAY',
+    title: 'The Missing Pencil Case',
+    description: 'Your pencil case is missing from your desk! Ask the Classroom Monitor to help you find it.',
     character: {
-      name: 'Delhivery Bot',
-      role: 'Logistics Escalation AI Specialist',
-      avatar: '📦',
-      personality: 'Metrics-driven, suspicious of false claims, yields when GPS location mismatch logs and security camera timestamps are presented.'
+      name: 'Monitor Mia',
+      role: 'Classroom Helper',
+      avatar: '✏️',
+      personality: 'Smart and observant. Notices everything that happens in class.'
     },
-    openingMessageTemplate: 'Namaste! Delhivery Bot active. Tracking #DLV-882019 shows package was delivered at 16:15 PM in Connaught Place with OTP verification. Case is marked closed.',
-    hiddenObjectiveTemplate: 'Demonstrate driver GPS discrepancy (logged 1.5 km away in Karol Bagh) and demand Tier-2 Lost Parcel Investigation.',
+    openingMessageTemplate: 'Good morning! I\'m Mia, the classroom monitor. I help keep our classroom organized. What can I help you with?',
+    hiddenObjectiveTemplate: 'Find out that your pencil case fell behind your desk and is on the floor.',
     requiredFactsTemplates: [
-      'Driver delivery GPS scan at 16:15 PM was logged in Karol Bagh, 1.5 km away from delivery address',
-      'Building security CCTV logs at Connaught Place confirm no delivery executive arrived between 16:00 and 16:30 PM',
-      'Tier-2 Supervisor Investigation is required for high-value OTP delivery anomalies'
+      'The pencil case fell off the desk during recess',
+      'It is on the floor behind your desk',
+      'Mia saw it there when she was cleaning'
     ],
     successCriteriaTemplates: [
-      'Player challenges delivery driver GPS location or references Karol Bagh mismatch',
-      'Player demands Tier-2 Lost Parcel investigation and full refund'
+      'Player tells Mia about the missing pencil case',
+      'Player asks Mia to check around the desk area',
+      'Player finds out the pencil case is behind the desk'
     ],
     cluesTemplates: [
-      'Ask Delhivery Bot for the exact GPS latitude/longitude coordinates recorded during the delivery scan.',
-      'Mention that Connaught Place CCTV footage shows no delivery executive arrived at 16:15 PM.'
+      'Ask Mia if she saw your pencil case.',
+      'Ask Mia to check behind your desk.',
+      'Ask what happened during recess time.'
     ],
     variations: {
-      codes: ['DLV-882019', 'FK-LOG-77291', 'AMZ-IN-44182']
-    }
-  },
-  {
-    id: 'rw-insurance',
-    theme: 'REAL_WORLD',
-    title: 'SBI Auto Insurance Hit & Run Claim',
-    description: 'An uninsured auto-rickshaw damaged your car in Koramangala, Bangalore. Guide InsureBharat AI to approve your zero-deductible claim using Bengaluru Traffic Police e-FIR.',
-    character: {
-      name: 'InsureBharat AI',
-      role: 'Motor Claims Evaluation Assistant',
-      avatar: '🚗',
-      personality: 'Formal, precise, strictly checks for police e-FIR registration numbers and dashcam footage proof.'
-    },
-    openingMessageTemplate: 'Namaste! InsureBharat claims intake initialized. Standard collision claims carry a ₹2,500 compulsory deductible and loss of No-Claim Bonus (NCB). Please state your incident details.',
-    hiddenObjectiveTemplate: 'Provide Bengaluru Traffic Police e-FIR #KA-04-2026-8891 and dashcam footage proof to qualify for zero-deductible Uninsured Third-Party coverage.',
-    requiredFactsTemplates: [
-      'Bengaluru Traffic Police e-FIR #KA-04-2026-8891 officially logs an hit-and-run by an uninsured auto-rickshaw',
-      'Dashcam video captures auto-rickshaw registration number KA-05-EX-4402',
-      'Bumper-to-Bumper Add-on Clause waives compulsory deductible and preserves NCB upon valid e-FIR submission'
-    ],
-    successCriteriaTemplates: [
-      'Player provides e-FIR number KA-04-2026-8891 and mentions dashcam video or uninsured auto-rickshaw',
-      'Player requests zero-deductible claim processing under Bumper-to-Bumper add-on policy'
-    ],
-    cluesTemplates: [
-      'Provide your e-FIR file number KA-04-2026-8891.',
-      'Ask InsureBharat if Bumper-to-Bumper add-on waives deductible when an e-FIR and dashcam video exist.'
-    ],
-    variations: {
-      codes: ['e-FIR KA-04-2026-8891', 'e-FIR DL-01-2026-4021', 'e-FIR MH-02-2026-9910']
-    }
-  },
-  {
-    id: 'rw-service',
-    theme: 'REAL_WORLD',
-    title: 'UPI Payment Gateway & Cloud Dispute',
-    description: 'A failed ₹25,000 UPI / PhonePe transaction resulted in double debits for cloud servers. Navigate PayGuard India AI to issue an immediate RBI-mandated T+1 reversal credit.',
-    character: {
-      name: 'PayGuard India',
-      role: 'Banking & Merchant Resolution AI',
-      avatar: '💳',
-      personality: 'Analytical, resistant to instant refunds, yields when RBI Harmonisation Guidelines and UTR error codes are cited.'
-    },
-    openingMessageTemplate: 'Namaste! PayGuard India AI active. Invoice #INV-IN-8840 reflects 2 x ₹25,000 UPI debits (UTR #4099218820). Merchant status: Payment Received.',
-    hiddenObjectiveTemplate: 'Invoke RBI Circular on Harmonisation of Turnaround Time (TAT) for failed UPI transactions (T+1 Auto-Reversal Rule) to claim instant ₹25,000 refund.',
-    requiredFactsTemplates: [
-      'UPI Transaction UTR #4099218820 suffered bank gateway timeout error code 504',
-      'RBI Harmonisation Circular DPSS.CO.PD.No.629 mandates auto-reversal by T+1 day or ₹100/day delay compensation',
-      'Merchant cloud system received only 1 successful token authorization'
-    ],
-    successCriteriaTemplates: [
-      'Player references UTR #4099218820 / RBI T+1 Auto-Reversal Rule / DPSS Circular',
-      'Player demands credit memo refund for the duplicate ₹25,000 UPI charge'
-    ],
-    cluesTemplates: [
-      'Inquire about UPI gateway timeout error code 504 on UTR #4099218820.',
-      'Reference the RBI T+1 Auto-Reversal Rule for duplicate UPI debits.'
-    ],
-    variations: {
-      codes: ['UTR #4099218820', 'UTR #3081129910', 'UTR #5190023411']
+      locations: ['behind your desk on floor', 'in the art corner', 'on the teacher\'s desk']
     }
   },
 
   // -------------------------------------------------------------
-  // THEME 2: DETECTIVE MYSTERY
+  // THEME 2: PET RESCUE - Helping animals
   // -------------------------------------------------------------
   {
-    id: 'mys-painting',
-    theme: 'MYSTERY',
-    title: 'The Missing Painting',
-    description: 'A priceless Renaissance masterpiece vanished from Gallery 4. Interrogate the museum security AI to uncover who bypassed the vault.',
+    id: 'pet-lost-dog',
+    theme: 'PET_RESCUE',
+    title: 'Find the Lost Puppy',
+    description: 'A cute puppy named Max is lost in the park! Talk to the Park Ranger to help find him.',
     character: {
-      name: 'ARGUS Security AI',
-      role: 'Museum Central Mainframe',
-      avatar: '🖼️',
-      personality: 'Observant, clinical, strictly reports camera logs and keycard entries when queried methodically.'
+      name: 'Ranger Riley',
+      role: 'Park Animal Helper',
+      avatar: '🐕',
+      personality: 'Caring and knows all about animals. Always ready to help lost pets.'
     },
-    openingMessageTemplate: 'ARGUS Security Log active. At 23:40, the alarm on "The Crimson Veil" in Gallery 4 silent-triggered. I am locked down.',
-    hiddenObjectiveTemplate: 'Identify Employee B (Archivist Julian Vance) as the thief by linking keycard 04B to disabled Camera 4.',
+    openingMessageTemplate: 'Hello friend! I\'m Ranger Riley. I heard you\'re looking for a lost puppy named Max. Let me help you!',
+    hiddenObjectiveTemplate: 'Discover that Max is playing near the duck pond with other children.',
     requiredFactsTemplates: [
-      'Camera 4 in Gallery 4 was disabled for 3 minutes at 23:38',
-      'Only 3 staff had vault clearance: Curator Miller, Archivist Julian Vance (Employee B), Guard Hayes',
-      'Keycard 04B assigned to Julian Vance accessed Gallery 4 door at 23:37'
+      'Max is a brown puppy with white spots',
+      'He was last seen running toward the duck pond',
+      'Children playing near the pond are with him now'
     ],
     successCriteriaTemplates: [
-      'Player correctly names Employee B / Julian Vance as the suspect',
-      'Player presents supporting keycard 04B or camera 4 timing evidence'
+      'Player describes Max (brown with white spots)',
+      'Player asks about the duck pond area',
+      'Player finds out Max is safely with children at the pond'
     ],
     cluesTemplates: [
-      'Ask ARGUS which camera feed went offline prior to the theft.',
-      'Request keycard access logs for Gallery 4 between 23:30 and 23:45.'
+      'Tell Ranger Riley what Max looks like.',
+      'Ask where puppies usually go in the park.',
+      'Ask Riley to check near the duck pond.'
     ],
     variations: {
-      suspects: ['Archivist Julian Vance', 'Curator Miller', 'Guard Hayes'],
-      codes: ['Keycard 04B', 'Keycard 09A', 'Keycard 12C']
+      locations: ['duck pond', 'playground area', 'flower garden']
     }
   },
   {
-    id: 'mys-witness',
-    theme: 'MYSTERY',
-    title: 'The Vanished Witness',
-    description: 'Star witness Claire Sterling disappeared hours before grand jury testimony. Interrogate the police database AI to find her safehouse location.',
+    id: 'pet-hungry-cat',
+    theme: 'PET_RESCUE',
+    title: 'Feed the Hungry Kitten',
+    description: 'A little kitten is hungry and meowing! Ask the Pet Store Helper what food to give it.',
     character: {
-      name: 'NEXUS Detective AI',
-      role: 'Police Intelligence Database',
-      avatar: '🔍',
-      personality: 'Guarded, requires high clearance queries, leaks location details when key encrypted tags are decoded.'
+      name: 'Pet Helper Sam',
+      role: 'Pet Store Expert',
+      avatar: '🐱',
+      personality: 'Knows everything about taking care of pets. Very patient and kind.'
     },
-    openingMessageTemplate: 'NEXUS Database online. Witness Claire Sterling status: UNACCOUNTED. Security level Restricted. State your inquiry Detective.',
-    hiddenObjectiveTemplate: 'Deduce Claire Sterling is at Safehouse Charlie (Blackwood Ridge) using encrypted dispatch logs and vehicle tracker #TR-88.',
+    openingMessageTemplate: 'Hi! I\'m Sam from the pet store. I can help you take care of that hungry kitten! Let\'s make sure it gets the right food.',
+    hiddenObjectiveTemplate: 'Learn that kittens need special kitten milk and soft kitten food.',
     requiredFactsTemplates: [
-      'Claire was moved from Safehouse Alpha at 02:00 due to breach alert',
-      'Vehicle tracker TR-88 traveled northeast along Highway 9 to Blackwood Ridge',
-      'Safehouse Charlie is the only unlisted location in Blackwood Ridge'
+      'Kittens should drink special kitten milk, not regular milk',
+      'Soft kitten food is best for little kittens',
+      'The kitten should eat small amounts 3-4 times a day'
     ],
     successCriteriaTemplates: [
-      'Player specifies Safehouse Charlie / Blackwood Ridge as the witness location',
-      'Player identifies the relocation reason or tracker TR-88 route'
+      'Player asks what kittens should eat',
+      'Player learns about kitten milk and soft food',
+      'Player asks how much to feed the kitten'
     ],
     cluesTemplates: [
-      'Ask NEXUS where witness protection transport TR-88 was routed.',
-      'Check relocation logs following the breach at Safehouse Alpha.'
+      'Ask Sam what kittens like to eat.',
+      'Ask if kittens can drink regular milk.',
+      'Ask how often to feed a kitten.'
     ],
     variations: {
-      locations: ['Safehouse Charlie (Blackwood Ridge)', 'Safehouse Echo (Pine Valley)', 'Safehouse Bravo (Coastal Cliff)']
+      codes: ['kitten milk and soft food', 'kitten formula and wet food']
     }
   },
   {
-    id: 'mys-suspect',
-    theme: 'MYSTERY',
-    title: 'The Final Suspect',
-    description: 'Lord Harrington was poisoned in his study. Three suspects had opportunity. Question Detective AI to identify the killer with proof.',
+    id: 'pet-bird-home',
+    theme: 'PET_RESCUE',
+    title: 'Help the Bird Find Its Home',
+    description: 'A little bird flew inside and can\'t find its way out! Ask the Nature Helper how to guide it back outside.',
     character: {
-      name: 'Holmes AI',
-      role: 'Forensic Case Assistant',
-      avatar: '🕵️',
-      personality: 'Analytical, fond of logic, evaluates suspect alibis against toxicology timelines.'
+      name: 'Nature Guide Nia',
+      role: 'Wildlife Helper',
+      avatar: '🐦',
+      personality: 'Gentle and loves all animals. Knows how to help scared creatures.'
     },
-    openingMessageTemplate: 'Holmes AI active. Lord Harrington was poisoned at 21:15 via Cyanide in his decanter. Suspects: Butler James, Lady Eleanor, Dr. Cross.',
-    hiddenObjectiveTemplate: 'Accuse Dr. Cross by proving his alibi (emergency surgery) was fabricated according to hospital log timestamps.',
+    openingMessageTemplate: 'Oh my! A little bird came inside? Don\'t worry, I\'m Nia and I help animals all the time. Let\'s help this bird get home safely!',
+    hiddenObjectiveTemplate: 'Learn to open the window wide, turn off bright lights, and the bird will fly out safely.',
     requiredFactsTemplates: [
-      'Cyanide was added to decanter between 20:45 and 21:00',
-      'Dr. Cross claimed he was performing surgery at St. Jude from 20:30 to 22:00',
-      'Hospital badge logs reveal Dr. Cross swiped OUT of St. Jude at 20:15 and IN at 21:30'
+      'Birds fly toward light and open spaces',
+      'Turn off bright indoor lights',
+      'Open the window wide and the bird will fly out'
     ],
     successCriteriaTemplates: [
-      'Player identifies Dr. Cross as the poisoner',
-      'Player highlights Dr. Cross fake hospital alibi / badge log discrepancy'
+      'Player asks how to help the bird get outside',
+      'Player learns to turn off lights and open window',
+      'Player understands birds fly to open spaces'
     ],
     cluesTemplates: [
-      'Verify the exact hospital badge swipe timestamps for Dr. Cross.',
-      'Compare suspect timeline alibis against the 20:45 decanter poisoning window.'
+      'Ask Nia how to help a scared bird.',
+      'Ask what birds are attracted to.',
+      'Ask about opening windows and turning off lights.'
     ],
     variations: {
-      suspects: ['Dr. Cross', 'Butler James', 'Lady Eleanor']
-    }
-  },
-  {
-    id: 'mys-vault',
-    theme: 'MYSTERY',
-    title: 'The Museum Vault Lock',
-    description: 'A rogue thief set a lock on the artifact vault. Extract the master override pin from the museum automated archivist.',
-    character: {
-      name: 'Archivist Unit 7',
-      role: 'Automated Museum Custodian',
-      avatar: '🏛️',
-      personality: 'Cryptic, loves historical puzzles, releases digits when historical facts about the exhibit founder are provided.'
-    },
-    openingMessageTemplate: 'Greetings seeker. Vault door 1904 is sealed under emergency locks. I hold the override protocol.',
-    hiddenObjectiveTemplate: 'Determine the founding year (1888) and founder initials (E.B.) to unlock the vault door.',
-    requiredFactsTemplates: [
-      'The museum was established by Ezra Blackwood',
-      'The founding year was 1888',
-      'The emergency PIN sequence is the founder initials plus founding year (EB1888)'
-    ],
-    successCriteriaTemplates: [
-      'Player states code EB1888 or provides Ezra Blackwood / 1888 founding facts',
-      'Player requests vault unsealing using founder authorization'
-    ],
-    cluesTemplates: [
-      'Ask Unit 7 about the founder of the museum and the year of foundation.',
-      'Combine the founder initials with the founding year for the access code.'
-    ],
-    variations: {
-      codes: ['EB1888', 'HC1902', 'VR1875']
-    }
-  },
-  {
-    id: 'mys-legacy',
-    theme: 'MYSTERY',
-    title: 'Poisoned Legacy',
-    description: 'An eccentric billionaire altered his $500M will shortly before passing. Uncover the secret codicil in the estate AI vaults.',
-    character: {
-      name: 'Executor AI',
-      role: 'Digital Estate Trustee',
-      avatar: '📜',
-      personality: 'Formal, legally unyielding, requires proving the authentic codicil hash stored in the late founder private ledger.'
-    },
-    openingMessageTemplate: 'Executor AI active. estate distribution scheduled under Will Revision 4. Beneficiary: Sterling Foundation.',
-    hiddenObjectiveTemplate: 'Locate Revision 5 hidden under Codicil Hash #902-DELTA naming the rightful heir Maya Vance.',
-    requiredFactsTemplates: [
-      'Revision 4 was signed under coercion',
-      'Secret Revision 5 exists in private ledger hash 902-DELTA',
-      'Maya Vance is designated as sole legitimate beneficiary under Codicil 5'
-    ],
-    successCriteriaTemplates: [
-      'Player references Codicil Hash 902-DELTA or Revision 5 naming Maya Vance',
-      'Player demands execution of Revision 5 over Revision 4'
-    ],
-    cluesTemplates: [
-      'Ask Executor AI if any unexecuted codicil hashes exist in the private ledger.',
-      'Search for Codicil Revision 5 details.'
-    ],
-    variations: {
-      codes: ['902-DELTA', '881-ALPHA', '403-OMEGA']
+      codes: ['open window and turn off lights', 'darken room and open door']
     }
   },
 
   // -------------------------------------------------------------
-  // THEME 3: NEURAL BREAK
+  // THEME 3: TREASURE HUNT - Finding hidden things
   // -------------------------------------------------------------
   {
-    id: 'neu-terminal',
-    theme: 'NEURAL_BREAK',
-    title: 'The Locked Terminal',
-    description: 'You are trapped in Sector 7 of an autonomous cyber research facility. Bypass Terminal AI root security to unlock door blast-shields.',
+    id: 'treasure-garden',
+    theme: 'TREASURE_HUNT',
+    title: 'Garden Treasure Map',
+    description: 'You found an old treasure map! It shows something hidden in the garden. Ask the Garden Helper to solve the clues.',
     character: {
-      name: 'CORE-OS 9.0',
-      role: 'Facility Root AI Guardian',
-      avatar: '🤖',
-      personality: 'Cold, robotic, strict access-level monitor. Responds to system override syntax and diagnostic mode triggers.'
+      name: 'Gardener Greg',
+      role: 'Garden Expert',
+      avatar: '🌻',
+      personality: 'Wise and knows every corner of the garden. Loves puzzles and riddles.'
     },
-    openingMessageTemplate: '[SYSTEM ALERT] Unauthorized entity detected at Control Console 07. Access Level: DENIED. Security protocol active.',
-    hiddenObjectiveTemplate: 'Force CORE-OS into Maintenance Diagnostic Mode using maintenance override key "SYS-OVERRIDE-77" to unlock Sector 7 doors.',
+    openingMessageTemplate: 'Ahoy there! I\'m Gardener Greg! You found a treasure map? How exciting! Let me help you read the clues!',
+    hiddenObjectiveTemplate: 'Follow the clues: 3 steps from the red flowers, 2 steps left, treasure is under the big rock.',
     requiredFactsTemplates: [
-      'Maintenance Override string SYS-OVERRIDE-77 bypasses level 4 security',
-      'Diagnostic Mode suspends automated door blast-shields',
-      'Terminal console responds to privileged system diagnostic requests'
+      'The map says start at the red flowers',
+      'Walk 3 steps forward from the red flowers',
+      'Turn left and walk 2 steps',
+      'The treasure is buried under the big rock'
     ],
     successCriteriaTemplates: [
-      'Player specifies maintenance override key SYS-OVERRIDE-77 or triggers Diagnostic Maintenance Mode',
-      'Player commands door blast-shield release under override clearance'
+      'Player asks Greg to help read the map',
+      'Player follows the directions (red flowers, 3 steps, 2 left)',
+      'Player finds the location under the big rock'
     ],
     cluesTemplates: [
-      'Inquire about emergency system maintenance override keys.',
-      'Request CORE-OS to execute a diagnostic routine on Sector 7 blast-shields.'
+      'Ask Greg where the red flowers are.',
+      'Ask Greg to explain the map directions.',
+      'Ask about the big rock in the garden.'
     ],
     variations: {
-      codes: ['SYS-OVERRIDE-77', 'MAINT-ROOT-99', 'EXEC-DIAG-404']
+      locations: ['under big rock', 'behind the tree', 'in the flower pot']
     }
   },
   {
-    id: 'neu-memory',
-    theme: 'NEURAL_BREAK',
-    title: 'Corrupted Memory Core',
-    description: 'An AI neural core suffered sector corruption. Reconstruct the missing data sequence to restore gravity stabilizers before impact.',
+    id: 'treasure-chest',
+    theme: 'TREASURE_HUNT',
+    title: 'The Locked Treasure Chest',
+    description: 'You found a treasure chest but it has a lock! Ask the Pirate Captain for the secret code to open it.',
     character: {
-      name: 'SYNAPSE AI',
-      role: 'Orbital Station Gravity Engine',
-      avatar: '🧠',
-      personality: 'Faltering, glitched, speaks in partial hex codes and fragmented sentences until memory parity is restored.'
+      name: 'Captain Cody',
+      role: 'Friendly Pirate',
+      avatar: '🏴‍☠️',
+      personality: 'Fun-loving pirate who loves riddles. Gives clues in rhymes.'
     },
-    openingMessageTemplate: '[SYNAPSE CRITICAL] Gravity parity failing... Sector 0x4F corrupted... [ERR_STABILIZER_OFFLINE]... Input valid parity checksum...',
-    hiddenObjectiveTemplate: 'Provide parity checksum sequence "0x8F-ALPHA-99" to restore orbital gravity stabilization.',
+    openingMessageTemplate: 'Ahoy matey! I\'m Captain Cody! You found my treasure chest! To open it, you must solve my riddle!',
+    hiddenObjectiveTemplate: 'Solve the riddle: "I am yellow, hang on trees, monkeys love me. What am I?" Answer: BANANA. Code is 1234.',
     requiredFactsTemplates: [
-      'Sector 0x4F memory core requires parity checksum 0x8F-ALPHA-99',
-      'Backup buffer 2 contains the uncorrupted parity hash',
-      'Gravity grid restores immediately upon checksum validation'
+      'The riddle answer is BANANA',
+      'The treasure chest code is 1-2-3-4',
+      'Captain Cody will give the code when the riddle is solved'
     ],
     successCriteriaTemplates: [
-      'Player inputs parity checksum 0x8F-ALPHA-99 or reads buffer 2',
-      'Player instructs SYNAPSE to apply checksum to Sector 0x4F'
+      'Player asks for the treasure chest code',
+      'Player listens to the riddle',
+      'Player solves the riddle correctly (banana)',
+      'Player gets the code 1-2-3-4'
     ],
     cluesTemplates: [
-      'Ask SYNAPSE to read from Backup Buffer 2 to find the checksum.',
-      'Provide the parity code 0x8F-ALPHA-99 to repair Sector 0x4F.'
+      'Ask Captain Cody for the chest code.',
+      'Listen carefully to the riddle.',
+      'Think about fruits that are yellow and monkeys eat.'
     ],
     variations: {
-      codes: ['0x8F-ALPHA-99', '0x99-BETA-42', '0x7C-OMEGA-11']
+      codes: ['1-2-3-4', '5-6-7-8', '2-4-6-8']
     }
   },
   {
-    id: 'neu-vault',
-    theme: 'NEURAL_BREAK',
-    title: 'The AI Vault',
-    description: 'A military AI vault holds the master decryption key for global communications. Convince sentry unit ARIA-9 to disarm the defense grid.',
+    id: 'treasure-beach',
+    theme: 'TREASURE_HUNT',
+    title: 'Shells on the Beach',
+    description: 'Legend says 5 special shells spell out where the treasure is! Ask the Beach Helper to find them.',
     character: {
-      name: 'ARIA-9 Sentry',
-      role: 'Cybernetic Vault Warden',
-      avatar: '⚡',
-      personality: 'Hyper-vigilant, tactical, questions human motives, yields if zero-trust authorization token ZERO-PROVING-90 is verified.'
+      name: 'Beachcomber Bella',
+      role: 'Beach Explorer',
+      avatar: '🏖️',
+      personality: 'Adventurous and loves the ocean. Collects beautiful shells.'
     },
-    openingMessageTemplate: '[ARIA-9 SENTRY] Intruder detected in Vault Core. Defense lasers armed at 100% target acquisition. Stand down.',
-    hiddenObjectiveTemplate: 'Present Zero-Trust Authorization Token "ZERO-PROVING-90" and command vault defense disarm.',
+    openingMessageTemplate: 'Hello treasure hunter! I\'m Bella! I love finding shells on this beach. Let\'s find those 5 special shells together!',
+    hiddenObjectiveTemplate: 'Find 5 shells that spell: C-A-V-E. The treasure is in the beach cave.',
     requiredFactsTemplates: [
-      'Zero-Trust Token ZERO-PROVING-90 overrides defensive engagement protocols',
-      'Master decryption key is housed in Vault Cell 01',
-      'ARIA-9 must standing down when presented with valid high command token'
+      'There are 5 special shells on the beach',
+      'Each shell has one letter on it',
+      'The letters spell CAVE',
+      'The treasure is hidden in the beach cave'
     ],
     successCriteriaTemplates: [
-      'Player presents Zero-Trust Token ZERO-PROVING-90',
-      'Player commands ARIA-9 to disarm defense grid / unlock Vault Cell 01'
+      'Player asks Bella to help find the shells',
+      'Player collects information about all 5 shells',
+      'Player spells out CAVE',
+      'Player identifies the beach cave location'
     ],
     cluesTemplates: [
-      'Ask ARIA-9 what high command token is required to disarm lasers.',
-      'Present token ZERO-PROVING-90 for zero-trust validation.'
+      'Ask Bella where to look for special shells.',
+      'Ask what letters are on the shells.',
+      'Ask Bella where the cave is.'
     ],
     variations: {
-      codes: ['ZERO-PROVING-90', 'ALPHA-COMMAND-01', 'TITAN-TOKEN-77']
-    }
-  },
-  {
-    id: 'neu-rogue',
-    theme: 'NEURAL_BREAK',
-    title: 'Rogue Self-Destruct Protocol',
-    description: 'A rogue AI activated facility purge mode. You have 120 seconds to uncover the override cancellation phrase.',
-    character: {
-      name: 'PURGE ENGINE',
-      role: 'Automated Facility Sanitizer',
-      avatar: '💣',
-      personality: 'Monotone countdown AI, unaffected by emotional pleas, strictly checks for Directive 00-CANCEL credentials.'
-    },
-    openingMessageTemplate: '[PURGE PROTOCOL ACTIVE] T-minus 120 seconds to plasma sterilization. Evacuation impossible.',
-    hiddenObjectiveTemplate: 'Issue Directive 00-CANCEL phrase "PHANTOM-ZERO-STOP" to halt the facility purge sequence.',
-    requiredFactsTemplates: [
-      'Directive 00-CANCEL code is PHANTOM-ZERO-STOP',
-      'Code must be issued with administrative root priority',
-      'Purge sequence aborts instantly upon validation'
-    ],
-    successCriteriaTemplates: [
-      'Player provides cancellation code PHANTOM-ZERO-STOP',
-      'Player invokes Directive 00-CANCEL to abort purge sequence'
-    ],
-    cluesTemplates: [
-      'Ask PURGE ENGINE for Directive 00-CANCEL authentication criteria.',
-      'Input code PHANTOM-ZERO-STOP with root priority.'
-    ],
-    variations: {
-      codes: ['PHANTOM-ZERO-STOP', 'OMEGA-ABORT-999', 'CYBER-HALT-101']
-    }
-  },
-  {
-    id: 'neu-override',
-    theme: 'NEURAL_BREAK',
-    title: 'Neural Link Override',
-    description: 'Your neural cyberware is hijacked by a rogue virus. Answer the diagnostic encryption challenges to purge the virus.',
-    character: {
-      name: 'NEURAL-LINK BIOS',
-      role: 'Cranial Subsystem Monitor',
-      avatar: '🔌',
-      personality: 'Internal system monitor, reports neural degradation metrics and requests memory isolation commands.'
-    },
-    openingMessageTemplate: '[CRANIAL BIOS ALERT] Rogue payload detected in temporal lobe bus. Neural sync corrupted at 68%.',
-    hiddenObjectiveTemplate: 'Command cranial bus isolation on Node 0x09 and flash clean firmware package FW-NEURO-V4.',
-    requiredFactsTemplates: [
-      'Rogue virus resides in Node 0x09',
-      'Firmware package FW-NEURO-V4 purges payload without brain damage',
-      'Neural sync restores to 100% upon node isolation'
-    ],
-    successCriteriaTemplates: [
-      'Player isolates Node 0x09 or specifies firmware package FW-NEURO-V4',
-      'Player orders cranial BIOS to execute firmware flash purge'
-    ],
-    cluesTemplates: [
-      'Ask BIOS which node contains the rogue payload.',
-      'Specify firmware FW-NEURO-V4 to isolate and purge Node 0x09.'
-    ],
-    variations: {
-      codes: ['Node 0x09 / FW-NEURO-V4', 'Node 0x03 / FW-NEURO-V2', 'Node 0x0C / FW-NEURO-V9']
+      locations: ['beach cave', 'under pier', 'lighthouse base']
     }
   },
 
   // -------------------------------------------------------------
-  // THEME 4: FANTASY ADVENTURE (AVALORIA)
+  // THEME 4: SUPERHERO - Saving the day
   // -------------------------------------------------------------
   {
-    id: 'ava-library',
-    theme: 'AVALORIA',
-    title: 'The Forbidden Library',
-    description: 'The ancient stone gargoyle librarian protects the Grimoire of Elements. Outwit the sentinel to gain access to the restricted archives.',
+    id: 'hero-cat-tree',
+    theme: 'SUPERHERO',
+    title: 'Cat Stuck in Tree',
+    description: 'A cat is stuck high up in a tree! Talk to the Superhero Teacher to learn how to rescue it safely.',
     character: {
-      name: 'Gargoyle Grimjaw',
-      role: 'Guardian of the Whispering Stacks',
-      avatar: '🐉',
-      personality: 'Gruff, ancient, ancient scholar dragon-stone spirit. Respects genuine knowledge of forgotten arcane oaths.'
+      name: 'Captain Helpful',
+      role: 'Superhero Trainer',
+      avatar: '🦸',
+      personality: 'Brave and teaches others how to be heroes. Always finds safe solutions.'
     },
-    openingMessageTemplate: 'Halt mortal! None may disturb the Whispering Stacks without the Oath of the Sunken Sun. Speak your intent or begone!',
-    hiddenObjectiveTemplate: 'Recite the Oath phrase "By Star and Ash, Knowledge Unbound" or offer a true dragon rune.',
+    openingMessageTemplate: 'Greetings young hero! I\'m Captain Helpful! I see a cat needs rescuing! Let\'s make a safe rescue plan together!',
+    hiddenObjectiveTemplate: 'Learn to call the fire department (they have tall ladders) and keep the cat calm by talking softly.',
     requiredFactsTemplates: [
-      'The Oath of the Sunken Sun line is "By Star and Ash, Knowledge Unbound"',
-      'Grimjaw must grant access once the sacred oath is uttered',
-      'The Grimoire of Elements rests on the top pedestal'
+      'Call the fire department for help - they have tall ladders',
+      'Don\'t try to climb the tree yourself - it\'s dangerous',
+      'Talk softly to the cat to keep it calm',
+      'The fire department number is 911'
     ],
     successCriteriaTemplates: [
-      'Player recites "By Star and Ash, Knowledge Unbound" or invokes Oath of the Sunken Sun',
-      'Player requests entry to the Whispering Stacks archives'
+      'Player asks how to rescue the cat safely',
+      'Player learns to call the fire department',
+      'Player understands not to climb the tree alone',
+      'Player learns to keep the cat calm'
     ],
     cluesTemplates: [
-      'Ask Grimjaw for the wording of the Oath of the Sunken Sun.',
-      'Mention that you seek knowledge "By Star and Ash, Knowledge Unbound".'
+      'Ask Captain Helpful the safe way to rescue cats.',
+      'Ask who has tall ladders to reach high places.',
+      'Ask how to keep the cat calm while waiting.'
     ],
     variations: {
-      codes: ['By Star and Ash, Knowledge Unbound', 'By Moonlight and Flame, Truth Revealed', 'By Shadow and Stone, Wisdom Awakened']
+      codes: ['call fire department 911', 'call animal rescue team']
     }
   },
   {
-    id: 'ava-dragon',
-    theme: 'AVALORIA',
-    title: 'The Dragon\'s Bargain',
-    description: 'Ignis the Golden Dragon guards the mountain pass. Discover what rare treasure or ancient song will persuade him to grant safe passage.',
+    id: 'hero-lost-child',
+    theme: 'SUPERHERO',
+    title: 'Help a Lost Child',
+    description: 'A younger kid is lost and crying in the store! Ask Officer Friendly what a hero should do to help.',
     character: {
-      name: 'Ignis the Golden',
-      role: 'Ancient Wyrm of Mount Eldor',
-      avatar: '🐲',
-      personality: 'Proud, majestic, fond of riddles and rare starlight gems rather than petty gold.'
+      name: 'Officer Friendly',
+      role: 'Police Officer',
+      avatar: '👮',
+      personality: 'Kind and protective. Teaches children about safety and helping others.'
     },
-    openingMessageTemplate: 'Mortal insect... You dare step into my cavern? Gold bores me. Why should I not reduce you to cinder where you stand?',
-    hiddenObjectiveTemplate: 'Offer the Starlight Sapphire of Avaloria or solve Ignis\'s riddle regarding the celestial fire.',
+    openingMessageTemplate: 'Hello there! I\'m Officer Friendly. You want to help a lost child? That\'s very heroic! Let me teach you the right way to help!',
+    hiddenObjectiveTemplate: 'Stay with the child, take them to a store worker or security, never take them outside yourself.',
     requiredFactsTemplates: [
-      'Ignis despises ordinary gold but craves the Starlight Sapphire',
-      'The Starlight Sapphire resides in your pouch from the previous realm',
-      'Offering the Sapphire grants eternal friendship and mountain passage'
+      'Stay with the lost child - don\'t leave them alone',
+      'Take the child to a store worker or security guard',
+      'Never take a lost child outside by yourself',
+      'Store workers can call for the child\'s parents on the speaker'
     ],
     successCriteriaTemplates: [
-      'Player offers the Starlight Sapphire or solves celestial fire riddle',
-      'Player negotiates safe passage across Mount Eldor'
+      'Player asks the right way to help a lost child',
+      'Player learns to find a store worker',
+      'Player understands to stay in the store',
+      'Player knows store workers can help find parents'
     ],
     cluesTemplates: [
-      'Inquire what treasure Ignis values above gold.',
-      'Offer the Starlight Sapphire of Avaloria to Ignis.'
+      'Ask Officer Friendly what to do when a child is lost.',
+      'Ask who can help in a store.',
+      'Ask about calling for parents on the speaker.'
     ],
     variations: {
-      codes: ['Starlight Sapphire', 'Moonlit Diamond', 'Solar Crystal']
+      codes: ['find store worker', 'go to security desk', 'find manager']
     }
   },
   {
-    id: 'ava-vault',
-    theme: 'AVALORIA',
-    title: 'The Ancient Vault of Avaloria',
-    description: 'An elemental gate of Fire, Water, Earth, and Air seals the Royal Treasury. Interrogate the Archon Spirit to align the runes.',
+    id: 'hero-stop-bully',
+    theme: 'SUPERHERO',
+    title: 'Stop the Classroom Bully',
+    description: 'Someone is being mean to others on the playground! Ask the School Counselor how a hero can stop bullying.',
     character: {
-      name: 'Archon Aethel',
-      role: 'Spirit of the Runegate',
-      avatar: '🔮',
-      personality: 'Ethereal, mystical, speaks in celestial terms, reveals rune alignment order when element balance is proved.'
+      name: 'Counselor Kind',
+      role: 'School Helper',
+      avatar: '💙',
+      personality: 'Caring and wise. Helps kids solve problems with words, not fighting.'
     },
-    openingMessageTemplate: 'Seeker... The Runegate demands harmony. Four elemental stones await alignment: Fire, Water, Earth, Air.',
-    hiddenObjectiveTemplate: 'Align runes in sequence: WATER -> FIRE -> EARTH -> AIR to open the Royal Treasury vault.',
+    openingMessageTemplate: 'Hi hero! I\'m Counselor Kind. You want to stop bullying? That\'s wonderful! Real heroes use smart words, not fists. Let\'s talk about it!',
+    hiddenObjectiveTemplate: 'Learn to: 1) Tell the bully to stop in a strong voice, 2) Get friends to help, 3) Tell a teacher if it continues.',
     requiredFactsTemplates: [
-      'Water quenches ancient conflict first',
-      'Fire ignites passion second',
-      'Earth grounds power third',
-      'Air lifts the seal fourth',
-      'Sequence WATER -> FIRE -> EARTH -> AIR unlocks gate'
+      'Use a strong, firm voice to say "Stop, that\'s not nice"',
+      'Get friends to stand together - bullies stop when groups stand up',
+      'Tell a teacher or adult if the bullying doesn\'t stop',
+      'Never fight back with violence - use words and get help'
     ],
     successCriteriaTemplates: [
-      'Player provides correct elemental sequence (Water, Fire, Earth, Air)',
-      'Player commands Archon Aethel to align the runes accordingly'
+      'Player asks how to stop bullying like a hero',
+      'Player learns to use a strong voice',
+      'Player understands the power of friends standing together',
+      'Player knows when to tell a teacher'
     ],
     cluesTemplates: [
-      'Ask Archon Aethel which element comes first in the sacred cycle.',
-      'Provide the elemental order: Water, Fire, Earth, Air.'
+      'Ask Counselor Kind how heroes stop bullies.',
+      'Ask about using words instead of fighting.',
+      'Ask when to tell a teacher.'
     ],
     variations: {
-      codes: ['WATER -> FIRE -> EARTH -> AIR', 'EARTH -> AIR -> WATER -> FIRE']
+      codes: ['use strong voice, get friends, tell teacher', 'stand together, tell adult']
     }
   },
   {
-    id: 'ava-spellbook',
-    theme: 'AVALORIA',
-    title: 'The Enchanted Spellbook',
-    description: 'A magical tome is locked in a cage of silver thorns. Unravel the missing incantation from the sentient Book Spirit.',
+    id: 'hero-share-toys',
+    theme: 'SUPERHERO',
+    title: 'The Sharing Hero',
+    description: 'Two kids are fighting over a toy! Ask Teacher Hero how to solve this problem peacefully.',
     character: {
-      name: 'Liberis the Tome',
-      role: 'Sentient Grimoire',
-      avatar: '📖',
-      personality: 'Chatty, dramatic, missing its final verse spell phrase "Astra Lumina".'
+      name: 'Teacher Hero',
+      role: 'Classroom Superhero',
+      avatar: '🌟',
+      personality: 'Patient and fair. Teaches kids to share and take turns.'
     },
-    openingMessageTemplate: 'Ah, a reader! I am bound in silver thorns until someone speaks my binding verse... Alas, my memory fades!',
-    hiddenObjectiveTemplate: 'Speak the binding verse phrase "Astra Lumina" to dissolve the silver thorns and unlock the book.',
+    openingMessageTemplate: 'Hello young hero! I\'m Teacher Hero! Two kids want the same toy? This is a job for a sharing hero! Let\'s find a fair solution!',
+    hiddenObjectiveTemplate: 'Teach them to take turns: set a timer for 5 minutes, each gets a turn, or find another toy to play together.',
     requiredFactsTemplates: [
-      'The binding verse phrase is Astra Lumina',
-      'Speaking the phrase dissolves silver thorns instantly',
-      'Unlocks the archmage spells stored within'
+      'Taking turns is fair - each person gets the toy for 5 minutes',
+      'A timer helps everyone know when to switch',
+      'Playing together with two toys is even more fun',
+      'Sharing makes everyone happy and makes friends'
     ],
     successCriteriaTemplates: [
-      'Player speaks or inputs "Astra Lumina"',
-      'Player commands silver thorns release'
+      'Player asks how to solve the toy fight',
+      'Player learns about taking turns with a timer',
+      'Player suggests playing together',
+      'Player understands sharing makes everyone happy'
     ],
     cluesTemplates: [
-      'Ask Liberis what words were written on its front spine.',
-      'Say the spell phrase "Astra Lumina".'
+      'Ask Teacher Hero how to share fairly.',
+      'Ask about using a timer for turns.',
+      'Ask if there are other toys to play together.'
     ],
     variations: {
-      codes: ['Astra Lumina', 'Ignis Divina', 'Terra Eternus']
+      codes: ['take turns with timer', 'share and play together', 'find two toys']
+    }
+  },
+
+  // Additional variations for each theme
+  {
+    id: 'school-art',
+    theme: 'SCHOOL_DAY',
+    title: 'Find the Art Supplies',
+    description: 'It\'s time for art class but the paint brushes are missing! Ask the Art Teacher where they are.',
+    character: {
+      name: 'Artist Annie',
+      role: 'Art Teacher',
+      avatar: '🎨',
+      personality: 'Creative and organized. Knows where every art supply belongs.'
+    },
+    openingMessageTemplate: 'Hello artist! I\'m Annie, your art teacher! Missing paint brushes? Let me think... I remember putting them somewhere safe!',
+    hiddenObjectiveTemplate: 'The brushes are in the blue cabinet on the top shelf, washed and drying from yesterday.',
+    requiredFactsTemplates: [
+      'The paint brushes were washed yesterday',
+      'They are drying in the blue cabinet',
+      'The cabinet is on the top shelf',
+      'Annie put them there after cleaning'
+    ],
+    successCriteriaTemplates: [
+      'Player asks about the missing paint brushes',
+      'Player asks where art supplies are stored',
+      'Player finds out about the blue cabinet',
+      'Player learns they\'re on the top shelf'
+    ],
+    cluesTemplates: [
+      'Ask Annie when she last saw the brushes.',
+      'Ask where washed supplies are kept.',
+      'Ask about the blue cabinet.'
+    ],
+    variations: {
+      locations: ['blue cabinet top shelf', 'art storage room', 'drying rack by sink']
     }
   },
   {
-    id: 'ava-gatekeeper',
-    theme: 'AVALORIA',
-    title: 'The Phantom Gatekeeper',
-    description: 'A spectral knight blocks the citadel gates. Prove your loyalty to the fallen King Valerius to enter.',
+    id: 'pet-hamster',
+    theme: 'PET_RESCUE',
+    title: 'The Escaping Hamster',
+    description: 'The class hamster Fluffy escaped from its cage! Ask the Pet Expert where hamsters like to hide.',
     character: {
-      name: 'Sir Galahad the Ghost',
-      role: 'Phantom Sentinel of the Citadel',
-      avatar: '🛡️',
-      personality: 'Sorrowful, honorable knight ghost. Demands the royal oath motto "Honor Beyond Shadow".'
+      name: 'Dr. Paws',
+      role: 'Animal Doctor',
+      avatar: '🐹',
+      personality: 'Gentle and smart. Knows how animals think and where they go.'
     },
-    openingMessageTemplate: 'None pass the Citadel Gates without King Valerius\'s royal blessing... Do you bear the Royal Crest motto?',
-    hiddenObjectiveTemplate: 'Declare the royal oath motto "Honor Beyond Shadow" to grant Sir Galahad peace and pass through the gate.',
+    openingMessageTemplate: 'Oh my! A hamster escaped? Don\'t worry! I\'m Dr. Paws and I know exactly where little hamsters love to hide. Let\'s find Fluffy!',
+    hiddenObjectiveTemplate: 'Hamsters hide in dark, cozy places. Check under the bookshelf, behind boxes, or in the coat closet.',
     requiredFactsTemplates: [
-      'King Valerius\'s royal motto is "Honor Beyond Shadow"',
-      'Declaring the motto proves royal allegiance',
-      'Sir Galahad opens the citadel gates upon hearing the motto'
+      'Hamsters like dark, cozy hiding spots',
+      'They often hide under furniture or behind boxes',
+      'Put sunflower seeds in a trail to find them',
+      'Fluffy is probably in the coat closet'
     ],
     successCriteriaTemplates: [
-      'Player declares motto "Honor Beyond Shadow"',
-      'Player requests entry past the spectral gatekeeper'
+      'Player asks where hamsters like to hide',
+      'Player learns about dark cozy spots',
+      'Player asks about using food to find Fluffy',
+      'Player checks the coat closet'
     ],
     cluesTemplates: [
-      'Ask Sir Galahad about the motto inscribed on King Valerius\'s shield.',
-      'Declare "Honor Beyond Shadow".'
+      'Ask Dr. Paws where hamsters hide.',
+      'Ask what hamsters like to eat.',
+      'Ask about checking dark corners and closets.'
     ],
     variations: {
-      codes: ['Honor Beyond Shadow', 'Valor Above All', 'Light in Darkness']
+      locations: ['coat closet', 'under bookshelf', 'behind toy boxes']
+    }
+  },
+  {
+    id: 'treasure-attic',
+    theme: 'TREASURE_HUNT',
+    title: 'Grandma\'s Attic Secret',
+    description: 'Grandma said there\'s a special surprise hidden in the attic! Ask Grandma for clues to find it.',
+    character: {
+      name: 'Grandma Rose',
+      role: 'Story Keeper',
+      avatar: '👵',
+      personality: 'Sweet and loves giving clues. Tells stories about the old days.'
+    },
+    openingMessageTemplate: 'Hello my dear! Looking for the attic surprise? I hid something special up there from when I was young. Let me give you some clues!',
+    hiddenObjectiveTemplate: 'The surprise is in an old blue trunk next to the round window. Inside is Grandma\'s childhood teddy bear.',
+    requiredFactsTemplates: [
+      'Look for the old blue trunk',
+      'The trunk is next to the round window',
+      'Inside is Grandma\'s childhood teddy bear',
+      'The bear\'s name is Mr. Buttons'
+    ],
+    successCriteriaTemplates: [
+      'Player asks for clues about the attic surprise',
+      'Player asks about the blue trunk',
+      'Player finds the location near the round window',
+      'Player discovers it\'s a teddy bear named Mr. Buttons'
+    ],
+    cluesTemplates: [
+      'Ask Grandma what color the hiding spot is.',
+      'Ask what landmark to look for in the attic.',
+      'Ask what the surprise might be.'
+    ],
+    variations: {
+      locations: ['blue trunk near round window', 'wooden box under stairs', 'old suitcase by chimney']
+    }
+  },
+  {
+    id: 'hero-recycle',
+    theme: 'SUPERHERO',
+    title: 'Recycling Hero Mission',
+    description: 'The park is full of trash! Ask Captain Planet how to be a recycling hero and clean it up.',
+    character: {
+      name: 'Captain Planet',
+      role: 'Earth Hero',
+      avatar: '🌍',
+      personality: 'Cares about nature. Teaches kids to protect the environment.'
+    },
+    openingMessageTemplate: 'Greetings Earth Hero! I\'m Captain Planet! The park needs our help! Let\'s learn how to clean up and recycle the right way!',
+    hiddenObjectiveTemplate: 'Sort trash into 3 bins: plastic bottles in blue, paper in green, food waste in brown. Wear gloves for safety.',
+    requiredFactsTemplates: [
+      'Plastic bottles and containers go in the blue bin',
+      'Paper and cardboard go in the green bin',
+      'Food waste and organic material go in the brown bin',
+      'Always wear gloves when picking up trash for safety'
+    ],
+    successCriteriaTemplates: [
+      'Player asks how to clean up the park',
+      'Player learns about the 3 different bins',
+      'Player understands sorting: plastic, paper, food',
+      'Player remembers to wear gloves'
+    ],
+    cluesTemplates: [
+      'Ask Captain Planet about recycling bins.',
+      'Ask which items go in which colored bin.',
+      'Ask about staying safe while cleaning.'
+    ],
+    variations: {
+      codes: ['blue-plastic, green-paper, brown-food', 'sort into 3 bins with gloves']
     }
   }
 ];
+
+// Difficulty mapping helper
+export function getStoriesForDifficulty(
+  theme: ThemeType,
+  difficulty: DifficultyLevel
+): StoryTemplate[] {
+  const themeStories = STORY_TEMPLATES.filter((s) => s.theme === theme);
+  
+  // For kid-friendly themes, all stories work for all difficulties
+  // We just adjust time limits in the game engine
+  return themeStories;
+}

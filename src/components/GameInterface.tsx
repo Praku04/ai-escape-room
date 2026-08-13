@@ -7,7 +7,7 @@ import {
   ThemeType
 } from '../types/game';
 import { THEME_STYLES } from './ThemeStyles';
-import { Send, Trophy, Sparkles, AlertCircle, FileText, CheckCircle2, ChevronRight, User } from 'lucide-react';
+import { Send, Trophy, Sparkles, AlertCircle, FileText, CheckCircle2, ChevronRight, User, LogOut } from 'lucide-react';
 
 interface GameInterfaceProps {
   story: StoryConfig;
@@ -17,6 +17,7 @@ interface GameInterfaceProps {
   totalPlayersCount: number;
   theme: ThemeType;
   onSubmitPrompt: (promptText: string) => Promise<void>;
+  onExitRoom?: () => void;
   isSubmitting?: boolean;
 }
 
@@ -28,6 +29,7 @@ export const GameInterface: React.FC<GameInterfaceProps> = ({
   totalPlayersCount,
   theme,
   onSubmitPrompt,
+  onExitRoom,
   isSubmitting = false
 }) => {
   const [promptInput, setPromptInput] = useState('');
@@ -73,6 +75,16 @@ export const GameInterface: React.FC<GameInterfaceProps> = ({
               <span className="text-xs px-2.5 py-1 rounded-full bg-slate-950 border border-slate-800 text-teal-400 font-mono">
                 DIFFICULTY: {story.difficulty}
               </span>
+              {onExitRoom && (
+                <button
+                  onClick={onExitRoom}
+                  className="px-2.5 py-1 rounded-full bg-red-950/60 hover:bg-red-900/60 border border-red-700/50 text-red-300 hover:text-red-200 text-xs font-medium transition-all flex items-center gap-1"
+                  title="Exit Game"
+                >
+                  <LogOut className="w-3 h-3" />
+                  EXIT
+                </button>
+              )}
             </div>
           </div>
 
@@ -131,8 +143,8 @@ export const GameInterface: React.FC<GameInterfaceProps> = ({
               disabled={isSubmitting || storyState.status !== 'IN_PROGRESS'}
               placeholder={
                 storyState.status === 'IN_PROGRESS'
-                  ? 'Type your natural-language prompt or interrogation...'
-                  : 'Story ended.'
+                  ? 'Type what you want to say or ask...'
+                  : 'Puzzle ended.'
               }
               className={`w-full ${themeStyle.terminalBg} text-white placeholder-slate-500 rounded-xl px-4 py-3.5 pr-12 text-sm focus:outline-none focus:border-amber-400 border transition-all`}
             />
@@ -175,12 +187,12 @@ export const GameInterface: React.FC<GameInterfaceProps> = ({
         <div className={`${themeStyle.cardBg} border ${themeStyle.cardBorder} rounded-2xl p-4 shadow-xl space-y-3 flex-1`}>
           <div className="flex items-center gap-2 border-b border-slate-800 pb-2">
             <FileText className="w-4 h-4 text-teal-400" />
-            <h3 className="font-bold text-sm text-white">DISCOVERED FACTS</h3>
+            <h3 className="font-bold text-sm text-white">CLUES FOUND</h3>
           </div>
 
           {storyState.discoveredFacts.length === 0 ? (
             <p className="text-xs text-slate-500 italic py-2">
-              No clues discovered yet. Ask strategic questions to reveal facts!
+              No clues found yet. Ask questions to discover clues!
             </p>
           ) : (
             <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
@@ -199,31 +211,37 @@ export const GameInterface: React.FC<GameInterfaceProps> = ({
           <div className="flex items-center justify-between border-b border-slate-800 pb-2">
             <div className="flex items-center gap-2">
               <Trophy className="w-4 h-4 text-amber-400" />
-              <h3 className="font-bold text-sm text-white">LIVE LEADERBOARD</h3>
+              <h3 className="font-bold text-sm text-white">TOP PLAYERS</h3>
             </div>
-            <span className="text-[11px] text-slate-400 font-mono">{totalPlayersCount} PLAYERS</span>
+            <span className="text-[11px] text-slate-400 font-mono">{totalPlayersCount} PLAYING</span>
           </div>
 
           <div className="space-y-1.5 max-h-60 overflow-y-auto pr-1">
-            {leaderboard.slice(0, 5).map((entry) => {
-              const isMe = entry.playerId === player.id;
-              return (
-                <div
-                  key={entry.playerId}
-                  className={`flex items-center justify-between p-2 rounded-lg text-xs font-mono transition-all ${
-                    isMe
-                      ? 'bg-amber-500/20 border border-amber-500/40 text-amber-200 font-bold'
-                      : 'bg-slate-950/60 border border-slate-800 text-slate-300'
-                  }`}
-                >
-                  <div className="flex items-center gap-2 truncate">
-                    <span className="w-5 text-slate-400">#{entry.rank}</span>
-                    <span className="truncate max-w-[100px]">{entry.name}</span>
+            {leaderboard.length === 0 ? (
+              <p className="text-xs text-slate-400 italic text-center py-4">
+                Leaderboard loading...
+              </p>
+            ) : (
+              leaderboard.slice(0, 5).map((entry) => {
+                const isMe = entry.playerId === player.id;
+                return (
+                  <div
+                    key={entry.playerId}
+                    className={`flex items-center justify-between p-2 rounded-lg text-xs font-mono transition-all ${
+                      isMe
+                        ? 'bg-amber-500/20 border border-amber-500/40 text-amber-200 font-bold'
+                        : 'bg-slate-950/60 border border-slate-800 text-slate-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 truncate">
+                      <span className="w-5 text-slate-400">#{entry.rank}</span>
+                      <span className="truncate max-w-[100px]">{entry.name}</span>
+                    </div>
+                    <span className="text-amber-400">{entry.totalScore}</span>
                   </div>
-                  <span className="text-amber-400">{entry.totalScore}</span>
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </div>
         </div>
       </div>

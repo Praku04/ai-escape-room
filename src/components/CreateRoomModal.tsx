@@ -22,8 +22,8 @@ export const CreateRoomModal: React.FC<CreateRoomModalProps> = ({
   isLoading = false
 }) => {
   const [hostName, setHostName] = useState('');
-  const [theme, setTheme] = useState<ThemeType>('MYSTERY');
-  const [difficulty, setDifficulty] = useState<DifficultyLevel>('MEDIUM');
+  const [theme, setTheme] = useState<ThemeType>('SCHOOL_DAY');
+  const [difficulty, setDifficulty] = useState<DifficultyLevel>('EASY');
   const [storiesCount, setStoriesCount] = useState(3);
   const [timePerStorySeconds, setTimePerStorySeconds] = useState(120);
   const [maxPlayers, setMaxPlayers] = useState(500);
@@ -42,7 +42,7 @@ export const CreateRoomModal: React.FC<CreateRoomModalProps> = ({
     });
   };
 
-  const themes: ThemeType[] = ['REAL_WORLD', 'MYSTERY', 'NEURAL_BREAK', 'AVALORIA'];
+  const themes: ThemeType[] = ['SCHOOL_DAY', 'PET_RESCUE', 'TREASURE_HUNT', 'SUPERHERO'];
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
@@ -51,10 +51,10 @@ export const CreateRoomModal: React.FC<CreateRoomModalProps> = ({
         <div className="flex items-center justify-between border-b border-slate-800 pb-4">
           <div>
             <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-              <Sparkles className="w-6 h-6 text-amber-400" />
-              CREATE AI ESCAPE ROOM
+              <Sparkles className="w-6 h-6 text-blue-400" />
+              CREATE YOUR GAME ROOM
             </h2>
-            <p className="text-sm text-slate-400">Configure room settings and invite up to 500 competitive players.</p>
+            <p className="text-sm text-slate-400">Choose a fun theme and invite your friends to play!</p>
           </div>
         </div>
 
@@ -62,22 +62,22 @@ export const CreateRoomModal: React.FC<CreateRoomModalProps> = ({
           {/* Host Name */}
           <div>
             <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-              Host Name / Alias
+              Your Name
             </label>
             <input
               type="text"
               required
-              placeholder="e.g. Mastermind, GameMaster, Priya"
+              placeholder="e.g. Alex, Maria, Sam"
               value={hostName}
               onChange={(e) => setHostName(e.target.value)}
               className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
             />
           </div>
 
-          {/* CHOOSE YOUR WORLD */}
+          {/* CHOOSE YOUR ADVENTURE */}
           <div>
             <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-3">
-              CHOOSE YOUR WORLD
+              CHOOSE YOUR ADVENTURE
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {themes.map((t) => {
@@ -90,14 +90,14 @@ export const CreateRoomModal: React.FC<CreateRoomModalProps> = ({
                     onClick={() => setTheme(t)}
                     className={`p-4 rounded-xl border text-left transition-all ${
                       isSelected
-                        ? 'border-amber-400 bg-amber-500/10 shadow-lg shadow-amber-500/10'
+                        ? 'border-blue-400 bg-blue-500/10 shadow-lg shadow-blue-500/10'
                         : 'border-slate-800 bg-slate-950/60 hover:border-slate-700'
                     }`}
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">{style.icon}</span>
                       <div>
-                        <div className={`font-bold text-sm ${isSelected ? 'text-amber-400' : 'text-white'}`}>
+                        <div className={`font-bold text-sm ${isSelected ? 'text-blue-400' : 'text-white'}`}>
                           {style.name}
                         </div>
                         <div className="text-xs text-slate-400">{style.subtitle}</div>
@@ -112,7 +112,7 @@ export const CreateRoomModal: React.FC<CreateRoomModalProps> = ({
           {/* Difficulty */}
           <div>
             <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-2">
-              <Shield className="w-4 h-4 text-indigo-400" /> DIFFICULTY LEVEL
+              <Shield className="w-4 h-4 text-indigo-400" /> HOW HARD?
             </label>
             <div className="grid grid-cols-3 gap-3">
               {(['EASY', 'MEDIUM', 'HARD'] as DifficultyLevel[]).map((d) => (
@@ -122,7 +122,7 @@ export const CreateRoomModal: React.FC<CreateRoomModalProps> = ({
                   onClick={() => setDifficulty(d)}
                   className={`py-2.5 px-3 rounded-xl border text-xs font-bold transition-all ${
                     difficulty === d
-                      ? 'border-indigo-500 bg-indigo-500/20 text-indigo-300'
+                      ? 'border-green-500 bg-green-500/20 text-green-300'
                       : 'border-slate-800 bg-slate-950/60 text-slate-400 hover:text-white'
                   }`}
                 >
@@ -136,46 +136,46 @@ export const CreateRoomModal: React.FC<CreateRoomModalProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-950/60 p-4 rounded-xl border border-slate-800">
             <div>
               <label className="block text-xs text-slate-400 mb-1 flex items-center gap-1">
-                <Layers className="w-3.5 h-3.5 text-teal-400" /> Stories Count
+                <Layers className="w-3.5 h-3.5 text-teal-400" /> How Many Puzzles?
               </label>
               <select
                 value={storiesCount}
                 onChange={(e) => setStoriesCount(Number(e.target.value))}
                 className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
               >
-                <option value={1}>1 Story (Quick)</option>
-                <option value={3}>3 Stories (Standard)</option>
-                <option value={5}>5 Stories (Marathon)</option>
+                <option value={1}>1 Puzzle (Quick)</option>
+                <option value={3}>3 Puzzles (Fun)</option>
+                <option value={5}>5 Puzzles (Long)</option>
               </select>
             </div>
 
             <div>
               <label className="block text-xs text-slate-400 mb-1 flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5 text-amber-400" /> Time / Story
+                <Clock className="w-3.5 h-3.5 text-amber-400" /> Time Per Puzzle
               </label>
               <select
                 value={timePerStorySeconds}
                 onChange={(e) => setTimePerStorySeconds(Number(e.target.value))}
                 className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
               >
-                <option value={60}>60 Seconds (Blitz)</option>
-                <option value={120}>120 Seconds (2 Mins - Default)</option>
-                <option value={180}>180 Seconds (3 Mins)</option>
+                <option value={60}>1 Minute (Fast)</option>
+                <option value={120}>2 Minutes (Good)</option>
+                <option value={180}>3 Minutes (More Time)</option>
               </select>
             </div>
 
             <div>
               <label className="block text-xs text-slate-400 mb-1 flex items-center gap-1">
-                <Users className="w-3.5 h-3.5 text-purple-400" /> Max Capacity
+                <Users className="w-3.5 h-3.5 text-purple-400" /> Max Friends
               </label>
               <select
                 value={maxPlayers}
                 onChange={(e) => setMaxPlayers(Number(e.target.value))}
                 className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
               >
-                <option value={50}>50 Players</option>
-                <option value={200}>200 Players</option>
-                <option value={500}>500 Players (Max)</option>
+                <option value={50}>50 Friends</option>
+                <option value={200}>200 Friends</option>
+                <option value={500}>500 Friends (Lots!)</option>
               </select>
             </div>
           </div>
@@ -192,9 +192,9 @@ export const CreateRoomModal: React.FC<CreateRoomModalProps> = ({
             <button
               type="submit"
               disabled={isLoading || !hostName.trim()}
-              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold shadow-lg shadow-amber-900/30 transition-all flex items-center gap-2 text-sm disabled:opacity-50"
+              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white font-bold shadow-lg shadow-blue-900/30 transition-all flex items-center gap-2 text-sm disabled:opacity-50"
             >
-              {isLoading ? 'Creating...' : 'CREATE ROOM'}
+              {isLoading ? 'Creating...' : 'START GAME'}
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

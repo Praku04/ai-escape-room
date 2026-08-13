@@ -67,7 +67,8 @@ export default function App() {
     });
     socketRef.current = socket;
 
-    socket.on('room:player_joined', ({ playersCount }) => {
+    socket.on('room:player_joined', (data) => {
+      console.log('Player joined event:', data);
       if (room) {
         fetchRoomDetails(room.code);
       }
@@ -120,11 +121,13 @@ export default function App() {
   // Fetch Room Details
   const fetchRoomDetails = async (code: string) => {
     try {
-      const res = await fetch(`/api/rooms/${code}`);
+      const token = sessionToken || localStorage.getItem('escape_session_token') || '';
+      const res = await fetch(`/api/rooms/${code}?sessionToken=${token}`);
       const data = await res.json();
       if (res.ok) {
         setRoom(data.room);
-        fetchLeaderboard(code);
+        // Always fetch leaderboard when fetching room details
+        await fetchLeaderboard(code);
       }
     } catch (err) {
       console.error('Error fetching room details:', err);
@@ -138,6 +141,7 @@ export default function App() {
       const res = await fetch(`/api/rooms/${code}/leaderboard?sessionToken=${token}`);
       const data = await res.json();
       if (res.ok) {
+        console.log('Leaderboard fetched:', data.leaderboard);
         setLeaderboard(data.leaderboard || []);
         if (data.stats) setStats(data.stats);
       }
@@ -200,7 +204,8 @@ export default function App() {
         });
       }
 
-      fetchLeaderboard(data.room.code);
+      // Fetch leaderboard immediately
+      await fetchLeaderboard(data.room.code);
       setView('HOST_LOBBY');
     } catch (err: any) {
       setErrorMsg(err.message);
@@ -236,7 +241,8 @@ export default function App() {
         });
       }
 
-      fetchLeaderboard(data.room.code);
+      // Fetch leaderboard immediately
+      await fetchLeaderboard(data.room.code);
 
       if (data.room.status === 'PLAYING') {
         fetchGameState();
@@ -312,10 +318,32 @@ export default function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ count })
       });
-      fetchLeaderboard(room.code);
+      await fetchLeaderboard(room.code);
     } catch (err) {
       console.error('Error adding bots:', err);
     }
+  };
+
+  // Exit/Leave Room Handler
+  const handleExitRoom = () => {
+    if (socketRef.current && room) {
+      socketRef.current.emit('room:leave', { 
+        roomCode: room.code, 
+        sessionToken 
+      });
+    }
+    
+    // Clear local state
+    setRoom(null);
+    setPlayer(null);
+    setActiveStory(null);
+    setStoryState(null);
+    setLeaderboard([]);
+    setSessionToken('');
+    localStorage.removeItem('escape_session_token');
+    
+    // Return to landing
+    setView('LANDING');
   };
 
   const currentRankEntry = leaderboard.find((l) => l.playerId === player?.id);
@@ -352,43 +380,43 @@ export default function App() {
         {/* VIEW 1: LANDING */}
         {view === 'LANDING' && (
           <div className="max-w-2xl mx-auto text-center space-y-8 my-8">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500/20 to-purple-500/20 border border-amber-500/30 px-4 py-1.5 rounded-full text-amber-400 font-mono text-xs font-bold uppercase tracking-widest shadow-lg">
-              <Sparkles className="w-4 h-4" /> AI-POWERED MULTIPLAYER ESCAPE ROOM
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 px-4 py-1.5 rounded-full text-blue-400 font-mono text-xs font-bold uppercase tracking-widest shadow-lg">
+              <Sparkles className="w-4 h-4" /> FUN LEARNING GAME FOR KIDS
             </div>
 
             <div className="space-y-4">
               <h1 className="text-4xl sm:text-6xl font-black text-white tracking-tight leading-tight">
-                OUTSMART THE AI. <br />
-                <span className="bg-gradient-to-r from-amber-400 via-teal-300 to-indigo-400 bg-clip-text text-transparent">
-                  ESCAPE THE ROOM.
+                SOLVE PUZZLES. <br />
+                <span className="bg-gradient-to-r from-blue-400 via-green-300 to-purple-400 bg-clip-text text-transparent">
+                  HELP OTHERS. BE A HERO!
                 </span>
               </h1>
               <p className="text-slate-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
-                Step inside interactive AI stories. Negotiate, interrogate, and solve hidden objectives using strategic natural-language prompts. Compete with 500 simultaneous players!
+                Talk to friendly characters and solve fun problems! Perfect for kids to learn problem-solving while having fun with friends!
               </p>
             </div>
 
             {/* Feature Highlights Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-left max-w-xl mx-auto">
               <div className="bg-slate-900/80 border border-slate-800 p-3 rounded-xl">
-                <span className="text-xl">✈️</span>
-                <div className="font-bold text-xs text-white mt-1">4 Themes</div>
-                <div className="text-[10px] text-slate-400">Real & Sci-Fi</div>
+                <span className="text-xl">🎒</span>
+                <div className="font-bold text-xs text-white mt-1">School Day</div>
+                <div className="text-[10px] text-slate-400">Classroom Fun</div>
               </div>
               <div className="bg-slate-900/80 border border-slate-800 p-3 rounded-xl">
-                <span className="text-xl">⏱️</span>
-                <div className="font-bold text-xs text-teal-400 mt-1">120s Countdown</div>
-                <div className="text-[10px] text-slate-400">Speed Bonuses</div>
+                <span className="text-xl">🐶</span>
+                <div className="font-bold text-xs text-green-400 mt-1">Pet Rescue</div>
+                <div className="text-[10px] text-slate-400">Help Animals</div>
               </div>
               <div className="bg-slate-900/80 border border-slate-800 p-3 rounded-xl">
-                <span className="text-xl">🧠</span>
-                <div className="font-bold text-xs text-amber-400 mt-1">AI Judge</div>
-                <div className="text-[10px] text-slate-400">Semantic Engine</div>
+                <span className="text-xl">🏴‍☠️</span>
+                <div className="font-bold text-xs text-orange-400 mt-1">Treasure Hunt</div>
+                <div className="text-[10px] text-slate-400">Find Secrets</div>
               </div>
               <div className="bg-slate-900/80 border border-slate-800 p-3 rounded-xl">
-                <span className="text-xl">🏆</span>
-                <div className="font-bold text-xs text-purple-400 mt-1">500 Players</div>
-                <div className="text-[10px] text-slate-400">Live Leaderboard</div>
+                <span className="text-xl">🦸</span>
+                <div className="font-bold text-xs text-purple-400 mt-1">Superhero</div>
+                <div className="text-[10px] text-slate-400">Save the Day</div>
               </div>
             </div>
 
@@ -396,16 +424,16 @@ export default function App() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
               <button
                 onClick={() => setView('CREATE_MODAL')}
-                className="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-base shadow-xl shadow-amber-900/30 transition-all flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white font-black text-base shadow-xl shadow-blue-900/30 transition-all flex items-center justify-center gap-2"
               >
-                <Sparkles className="w-5 h-5" /> CREATE ROOM (HOST)
+                <Sparkles className="w-5 h-5" /> CREATE ROOM (START GAME)
               </button>
 
               <button
                 onClick={() => setView('JOIN_FORM')}
                 className="w-full sm:w-auto px-8 py-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-white font-bold text-base shadow-lg transition-all flex items-center justify-center gap-2"
               >
-                <KeyRound className="w-5 h-5 text-teal-400" /> JOIN ROOM
+                <KeyRound className="w-5 h-5 text-green-400" /> JOIN ROOM (PLAY WITH FRIENDS)
               </button>
             </div>
           </div>
@@ -434,6 +462,7 @@ export default function App() {
             players={leaderboard}
             onStartGame={handleStartGame}
             onAddBots={handleAddBots}
+            onExitRoom={handleExitRoom}
           />
         )}
 
@@ -443,6 +472,7 @@ export default function App() {
             room={room}
             playerName={player.name}
             totalPlayersCount={leaderboard.length}
+            onExitRoom={handleExitRoom}
           />
         )}
 
@@ -459,8 +489,9 @@ export default function App() {
             player={player}
             leaderboard={leaderboard}
             totalPlayersCount={leaderboard.length}
-            theme={room?.theme || 'MYSTERY'}
+            theme={room?.theme || 'SCHOOL_DAY'}
             onSubmitPrompt={handleSubmitPrompt}
+            onExitRoom={handleExitRoom}
           />
         )}
 
@@ -490,7 +521,7 @@ export default function App() {
 
       {/* Global Footer */}
       <footer className="py-4 border-t border-slate-900 text-center text-xs text-slate-500 font-mono">
-        AI ESCAPE ROOM Platform • Real-time Multiplayer Engine • Docker & Redis Ready
+        Kids Learning Game • Talk to Characters • Solve Fun Problems • Play with Friends
       </footer>
     </div>
   );
