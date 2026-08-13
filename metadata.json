@@ -1,0 +1,6 @@
+{
+  "name": "AI Escape Room",
+  "description": "A competitive AI-powered multiplayer escape room and prompt engineering puzzle game.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

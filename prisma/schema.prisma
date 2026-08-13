@@ -1,0 +1,99 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum RoomStatus {
+  WAITING
+  STARTING
+  PLAYING
+  COMPLETED
+  ENDED
+}
+
+enum ThemeType {
+  REAL_WORLD
+  MYSTERY
+  NEURAL_BREAK
+  AVALORIA
+}
+
+enum DifficultyLevel {
+  EASY
+  MEDIUM
+  HARD
+}
+
+model Room {
+  id                  String          @id @default(uuid())
+  code                String          @unique
+  hostId              String
+  status              RoomStatus      @default(WAITING)
+  maxPlayers          Int             @default(500)
+  theme               ThemeType       @default(MYSTERY)
+  difficulty          DifficultyLevel @default(MEDIUM)
+  storiesCount        Int             @default(3)
+  timePerStorySeconds Int             @default(120)
+  createdAt           DateTime        @default(now())
+  startedAt           DateTime?
+  completedAt         DateTime?
+  players             Player[]
+  stories             Story[]
+}
+
+model Player {
+  id                   String        @id @default(uuid())
+  roomId               String
+  room                 Room          @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  name                 String
+  sessionToken         String        @unique
+  isHost               Boolean       @default(false)
+  connected            Boolean       @default(true)
+  currentStoryIndex    Int           @default(0)
+  totalScore           Int           @default(0)
+  totalTimeSeconds     Int           @default(0)
+  completedStoriesCount Int          @default(0)
+  createdAt            DateTime      @default(now())
+  playerStories        PlayerStory[]
+}
+
+model Story {
+  id               String          @id @default(uuid())
+  roomId           String
+  room             Room            @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  order            Int
+  theme            ThemeType
+  difficulty       DifficultyLevel
+  title            String
+  description      String
+  characterName    String
+  characterRole    String
+  characterAvatar  String
+  openingMessage   String
+  hiddenObjective  String
+  requiredFacts    String[]
+  successCriteria  String[]
+  timeLimitSeconds Int             @default(120)
+  playerStories    PlayerStory[]
+}
+
+model PlayerStory {
+  id                String    @id @default(uuid())
+  playerId          String
+  player            Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  storyId           String
+  story             Story     @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  startedAt         DateTime  @default(now())
+  deadline          DateTime
+  completedAt       DateTime?
+  status            String    @default("IN_PROGRESS")
+  score             Int       @default(0)
+  completionSeconds Int       @default(0)
+  attempts          Int       @default(0)
+  conversation      Json
+  discoveredFacts   String[]
+}
