@@ -20,39 +20,37 @@ echo -e "AI Escape Room - VPS Setup"
 echo -e "========================================${NC}"
 echo ""
 
-# Check if running as root or with sudo
-if [ "$EUID" -ne 0 ]; then 
-    echo -e "${RED}Please run with sudo: sudo bash setup-vps.sh${NC}"
-    exit 1
-fi
+# Get current directory as project directory
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ACTUAL_USER=$USER
 
-# Get the actual user (not root when using sudo)
-ACTUAL_USER=${SUDO_USER:-$USER}
-PROJECT_DIR="/opt/ai-escape-room"
+echo -e "${CYAN}Installing in: $PROJECT_DIR${NC}"
+echo -e "${CYAN}Running as user: $ACTUAL_USER${NC}"
+echo ""
 
-echo -e "${YELLOW}[1/8] Updating system packages...${NC}"
-apt update && apt upgrade -y
+echo -e "${YELLOW}[1/7] Updating system packages...${NC}"
+sudo apt update && sudo apt upgrade -y
 echo -e "${GREEN}✓ System updated${NC}"
 echo ""
 
-echo -e "${YELLOW}[2/8] Installing required packages...${NC}"
-apt install -y curl wget git ufw nano net-tools
+echo -e "${YELLOW}[2/7] Installing required packages...${NC}"
+sudo apt install -y curl wget git nano net-tools
 echo -e "${GREEN}✓ Base packages installed${NC}"
 echo ""
 
-echo -e "${YELLOW}[3/8] Installing Docker...${NC}"
+echo -e "${YELLOW}[3/7] Installing Docker...${NC}"
 if ! command -v docker &> /dev/null; then
     echo "Installing Docker..."
     curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
-    sh /tmp/get-docker.sh
+    sudo sh /tmp/get-docker.sh
     rm /tmp/get-docker.sh
     
     # Add user to docker group
-    usermod -aG docker $ACTUAL_USER
+    sudo usermod -aG docker $ACTUAL_USER
     
     # Start and enable Docker
-    systemctl enable docker
-    systemctl start docker
+    sudo systemctl enable docker
+    sudo systemctl start docker
     
     echo -e "${GREEN}✓ Docker installed successfully${NC}"
 else
@@ -60,29 +58,19 @@ else
 fi
 echo ""
 
-echo -e "${YELLOW}[4/8] Installing Docker Compose...${NC}"
+echo -e "${YELLOW}[4/7] Installing Docker Compose...${NC}"
 if ! command -v docker-compose &> /dev/null; then
     echo "Installing Docker Compose..."
-    apt install -y docker-compose
+    sudo apt install -y docker-compose
     echo -e "${GREEN}✓ Docker Compose installed successfully${NC}"
 else
     echo -e "${GREEN}✓ Docker Compose already installed${NC}"
 fi
+
+echo -e "${CYAN}Note: Firewall management skipped - please configure via your VPS provider's control panel${NC}"
 echo ""
 
-echo -e "${YELLOW}[5/8] Setting up firewall (UFW)...${NC}"
-# Configure firewall
-ufw --force enable
-ufw default deny incoming
-ufw default allow outgoing
-ufw allow 22/tcp comment 'SSH'
-ufw allow 80/tcp comment 'HTTP'
-ufw allow 443/tcp comment 'HTTPS'
-ufw allow 3000/tcp comment 'AI Escape Room'
-echo -e "${GREEN}✓ Firewall configured${NC}"
-echo ""
-
-echo -e "${YELLOW}[6/8] Setting up environment file...${NC}"
+echo -e "${YELLOW}[5/7] Setting up environment file...${NC}"
 cd $PROJECT_DIR
 
 # Create .env file if it doesn't exist
@@ -95,17 +83,23 @@ if [ ! -f .env ]; then
     sed -i 's|REDIS_URL="redis://localhost:6379"|REDIS_URL="redis://redis:6379"|' .env
     
     echo -e "${GREEN}✓ Environment file created${NC}"
-    echo -e "${YELLOW}⚠ IMPORTANT: You must update GEMINI_API_KEY in /opt/ai-escape-room/.env${NC}"
+    echo -e "${YELLOW}⚠ IMPORTANT: You must update GEMINI_API_KEY in $PROJECT_DIR/.env${NC}"
 else
     echo -e "${GREEN}✓ Environment file already exists${NC}"
 fi
 echo ""
 
-echo -e "${YELLOW}[7/8] Building and starting Docker containers...${NC}"
+echo -e "${YELLOW}[6/7] Generating package-lock.json...${NC}"
+cd $PROJECT_DIR
+npm install --package-lock-only
+echo -e "${GREEN}✓ package-lock.json generated${NC}"
+echo ""
+
+echo -e "${YELLOW}[7/7] Building and starting Docker containers...${NC}"
 cd $PROJECT_DIR
 
 # Stop any running containers
-if [ "$(docker-compose ps -q)" ]; then
+if [ "$(docker-compose ps -q 2>/dev/null)" ]; then
     echo "Stopping existing containers..."
     docker-compose down
 fi
@@ -122,7 +116,7 @@ echo "Waiting for services to start..."
 sleep 10
 
 # Check if containers are running
-if [ "$(docker-compose ps -q)" ]; then
+if [ "$(docker-compose ps -q 2>/dev/null)" ]; then
     echo -e "${GREEN}✓ All services started successfully${NC}"
 else
     echo -e "${RED}✗ Failed to start services${NC}"
@@ -131,13 +125,8 @@ else
 fi
 echo ""
 
-echo -e "${YELLOW}[8/8] Final setup steps...${NC}"
-
-# Set correct permissions
-chown -R $ACTUAL_USER:$ACTUAL_USER $PROJECT_DIR
-
 # Get server IP
-SERVER_IP=$(curl -s ifconfig.me || hostname -I | awk '{print $1}')
+SERVER_IP=$(curl -s ifconfig.me 2>/dev/null || hostname -I | awk '{print $1}')
 
 echo -e "${GREEN}✓ Setup complete${NC}"
 echo ""
@@ -148,23 +137,23 @@ echo -e "========================================${NC}"
 echo ""
 echo -e "${YELLOW}IMPORTANT - Next Steps:${NC}"
 echo -e "${CYAN}1.${NC} Edit the environment file:"
-echo -e "   ${GREEN}sudo nano /opt/ai-escape-room/.env${NC}"
+echo -e "   ${GREEN}nano $PROJECT_DIR/.env${NC}"
 echo ""
 echo -e "${CYAN}2.${NC} Update these variables:"
 echo -e "   ${YELLOW}GEMINI_API_KEY=${NC}your_actual_api_key_here"
 echo -e "   Get your key from: ${GREEN}https://makersuite.google.com/app/apikey${NC}"
 echo ""
 echo -e "${CYAN}3.${NC} Restart the application:"
-echo -e "   ${GREEN}cd /opt/ai-escape-room && sudo docker-compose restart${NC}"
+echo -e "   ${GREEN}cd $PROJECT_DIR && docker-compose restart${NC}"
 echo ""
 echo -e "${CYAN}========================================"
 echo -e "Useful Commands:"
 echo -e "========================================${NC}"
-echo -e "View logs:           ${GREEN}sudo docker-compose logs -f app${NC}"
-echo -e "Restart services:    ${GREEN}sudo docker-compose restart${NC}"
-echo -e "Stop services:       ${GREEN}sudo docker-compose down${NC}"
-echo -e "Start services:      ${GREEN}sudo docker-compose up -d${NC}"
-echo -e "Check status:        ${GREEN}sudo docker-compose ps${NC}"
+echo -e "View logs:           ${GREEN}docker-compose logs -f app${NC}"
+echo -e "Restart services:    ${GREEN}docker-compose restart${NC}"
+echo -e "Stop services:       ${GREEN}docker-compose down${NC}"
+echo -e "Start services:      ${GREEN}docker-compose up -d${NC}"
+echo -e "Check status:        ${GREEN}docker-compose ps${NC}"
 echo ""
 echo -e "${CYAN}========================================"
 echo -e "Access Your Application:"

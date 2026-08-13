@@ -12,39 +12,47 @@ This guide will get your AI Escape Room running on a VPS in just a few steps.
 
 ---
 
-## 🎯 Option 1: Automated Deployment from Windows (EASIEST)
+## 🎯 Automated Deployment with Bash Script (EASIEST)
 
-### Step 1: Open PowerShell
-Right-click on the Start menu and select "Windows PowerShell" or "Terminal"
-
-### Step 2: Navigate to the project
-```powershell
-cd C:\Users\ranja\Downloads\ai-escape-room
+### Step 1: Make the script executable
+```bash
+chmod +x deploy-to-vps.sh
 ```
 
-### Step 3: Run the deployment script
-```powershell
-# If using password authentication:
-.\deploy-to-vps.ps1 -VPS_IP "your.vps.ip.address" -VPS_USER "root"
+### Step 2: Run the deployment script
+```bash
+# Basic usage (password authentication):
+./deploy-to-vps.sh your.vps.ip.address root
 
-# If using SSH key:
-.\deploy-to-vps.ps1 -VPS_IP "your.vps.ip.address" -VPS_USER "root" -SSH_KEY_PATH "C:\path\to\your\key.pem"
+# With SSH key:
+./deploy-to-vps.sh your.vps.ip.address root ~/.ssh/my-key.pem
+
+# With custom installation directory:
+./deploy-to-vps.sh your.vps.ip.address ubuntu ~/.ssh/my-key.pem /home/ubuntu/my-app
 ```
 
 **Example:**
-```powershell
-.\deploy-to-vps.ps1 -VPS_IP "142.93.123.45" -VPS_USER "root"
+```bash
+./deploy-to-vps.sh 142.93.123.45 root
 ```
 
-### Step 4: Add your Gemini API key
-The script will prompt you at the end. SSH into your VPS:
-```powershell
+The script will:
+- ✅ Upload all files to your VPS
+- ✅ Install Docker and Docker Compose
+- ✅ Create environment file
+- ✅ Build and start all services (App, PostgreSQL, Redis)
+
+**Time: ~5-10 minutes depending on your VPS speed**
+
+### Step 3: Add your Gemini API key
+SSH into your VPS:
+```bash
 ssh root@your.vps.ip.address
 ```
 
-Then edit the .env file:
+Edit the .env file:
 ```bash
-sudo nano /opt/ai-escape-room/.env
+nano ~/ai-escape-room/.env
 ```
 
 Find this line:
@@ -52,17 +60,17 @@ Find this line:
 GEMINI_API_KEY=your_actual_gemini_api_key_here
 ```
 
-Replace `your_actual_gemini_api_key_here` with your actual API key.
+Replace `your_actual_gemini_api_key_here` with your actual API key from https://makersuite.google.com/app/apikey
 
 Press `Ctrl+X`, then `Y`, then `Enter` to save.
 
-### Step 5: Restart the application
+### Step 4: Restart the application
 ```bash
-cd /opt/ai-escape-room
-sudo docker-compose restart
+cd ~/ai-escape-room
+docker-compose restart
 ```
 
-### Step 6: Access your app! 🎉
+### Step 5: Access your app! 🎉
 Open your browser and go to:
 ```
 http://your.vps.ip.address:3000
@@ -70,43 +78,53 @@ http://your.vps.ip.address:3000
 
 ---
 
-## 🎯 Option 2: Manual Deployment on VPS
+## 🎯 Manual Deployment on VPS
+
+If you prefer to do it manually:
 
 ### Step 1: Connect to your VPS
 ```bash
 ssh root@your.vps.ip.address
 ```
 
-### Step 2: Download the project
-```bash
-# Install git if needed
-apt install -y git
+### Step 2: Upload the project
+Use one of these methods:
 
-# Clone or download your project
-cd /opt
-git clone https://github.com/yourusername/ai-escape-room.git
-# OR upload files using FileZilla/WinSCP to /opt/ai-escape-room
+**Option A: Using Git**
+```bash
+git clone https://github.com/yourusername/ai-escape-room.git ~/ai-escape-room
+cd ~/ai-escape-room
+```
+
+**Option B: Using SCP from your local machine**
+```bash
+# From your local machine
+scp -r /path/to/ai-escape-room root@your.vps.ip:/root/ai-escape-room
+```
+
+**Option C: Using rsync (recommended)**
+```bash
+# From your local machine
+rsync -avz --exclude='node_modules' --exclude='.git' --exclude='dist' \
+    /path/to/ai-escape-room/ root@your.vps.ip:~/ai-escape-room/
 ```
 
 ### Step 3: Run the setup script
 ```bash
-cd /opt/ai-escape-room
+cd ~/ai-escape-room
 chmod +x setup-vps.sh
-sudo bash setup-vps.sh
+bash setup-vps.sh
 ```
 
 This will automatically:
 - ✅ Update system packages
 - ✅ Install Docker and Docker Compose
-- ✅ Configure firewall
 - ✅ Create environment file
-- ✅ Build and start all services (App, PostgreSQL, Redis)
-
-**Time: ~5-10 minutes depending on your VPS speed**
+- ✅ Build and start all services
 
 ### Step 4: Add your Gemini API key
 ```bash
-sudo nano /opt/ai-escape-room/.env
+nano ~/ai-escape-room/.env
 ```
 
 Update this line:
@@ -120,8 +138,8 @@ Press `Ctrl+X`, then `Y`, then `Enter` to save.
 
 ### Step 5: Restart the application
 ```bash
-cd /opt/ai-escape-room
-sudo docker-compose restart
+cd ~/ai-escape-room
+docker-compose restart
 ```
 
 ### Step 6: Done! 🎉
@@ -210,41 +228,41 @@ Now access your app at: `https://your-domain.com`
 
 ### View application logs:
 ```bash
-cd /opt/ai-escape-room
-sudo docker-compose logs -f app
+cd ~/ai-escape-room
+docker-compose logs -f app
 ```
 Press `Ctrl+C` to exit logs.
 
 ### Restart application:
 ```bash
-cd /opt/ai-escape-room
-sudo docker-compose restart
+cd ~/ai-escape-room
+docker-compose restart
 ```
 
 ### Stop application:
 ```bash
-cd /opt/ai-escape-room
-sudo docker-compose down
+cd ~/ai-escape-room
+docker-compose down
 ```
 
 ### Start application:
 ```bash
-cd /opt/ai-escape-room
-sudo docker-compose up -d
+cd ~/ai-escape-room
+docker-compose up -d
 ```
 
 ### Check if services are running:
 ```bash
-cd /opt/ai-escape-room
-sudo docker-compose ps
+cd ~/ai-escape-room
+docker-compose ps
 ```
 
 ### Update application after code changes:
 ```bash
-cd /opt/ai-escape-room
+cd ~/ai-escape-room
 git pull origin main  # if using git
-sudo docker-compose down
-sudo docker-compose up -d --build
+docker-compose down
+docker-compose up -d --build
 ```
 
 ---
@@ -254,30 +272,32 @@ sudo docker-compose up -d --build
 ### Can't access the app?
 1. Check if Docker containers are running:
    ```bash
-   sudo docker-compose ps
+   docker-compose ps
    ```
 
 2. Check application logs:
    ```bash
-   sudo docker-compose logs app
+   docker-compose logs app
    ```
 
-3. Check if port 3000 is open:
+3. Check if port 3000 is listening:
    ```bash
-   sudo ufw status
+   netstat -tulpn | grep 3000
    ```
 
-4. Check firewall on your VPS provider (DigitalOcean, AWS, etc.)
+4. Check if your VPS provider has a firewall (Security Groups in AWS/DigitalOcean)
+   - Make sure port 3000 is open in your VPS provider's control panel
 
 ### API not working?
 1. Verify your Gemini API key is correct:
    ```bash
-   sudo nano /opt/ai-escape-room/.env
+   nano ~/ai-escape-room/.env
    ```
 
 2. Restart after changing .env:
    ```bash
-   sudo docker-compose restart
+   cd ~/ai-escape-room
+   docker-compose restart
    ```
 
 ### Out of memory?
@@ -295,6 +315,15 @@ sudo docker-compose up -d --build
    echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
    ```
 
+### Docker permission denied?
+If you get "permission denied" errors:
+```bash
+# Log out and log back in after setup to apply docker group membership
+exit
+# Then SSH back in
+ssh root@your.vps.ip.address
+```
+
 ---
 
 ## 📊 Testing with Multiple Players
@@ -308,18 +337,40 @@ Once your app is running:
 
 ---
 
+## 💡 Installation Directory Options
+
+By default, the app installs to `~/ai-escape-room` (your home directory).
+
+You can customize the installation directory:
+
+```bash
+# Install to a different location
+./deploy-to-vps.sh your.vps.ip username ssh-key /custom/path
+```
+
+Examples:
+```bash
+# Install to /var/www/ai-escape-room
+./deploy-to-vps.sh 142.93.123.45 root "" /var/www/ai-escape-room
+
+# Install to user's home directory
+./deploy-to-vps.sh 142.93.123.45 ubuntu ~/.ssh/key.pem /home/ubuntu/apps/ai-escape-room
+```
+
+---
+
 ## 🎉 That's It!
 
 Your AI Escape Room is now live and ready for players!
 
 **Need help?** Check the logs first:
 ```bash
-sudo docker-compose logs -f app
+docker-compose logs -f app
 ```
 
 Most issues are related to:
 - Missing or incorrect Gemini API key
-- Firewall blocking port 3000
+- VPS provider firewall blocking port 3000
 - Insufficient server resources (upgrade to 4GB RAM for 500 players)
 
 ---
